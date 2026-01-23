@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { CheckCircle, ClipboardList, User, Users, Mail, Award } from "lucide-react";
+import { Link } from "react-router-dom";
 import NavigationCard from "@/components/NavigationCard";
 import backgroundImage from "@/assets/background.jpg";
 
@@ -55,6 +56,16 @@ const Index = () => {
           ))}
         </div>
       </div>
+
+      {/* Footer */}
+      <footer className="px-6 py-4 text-center">
+        <Link 
+          to="/admin" 
+          className="text-sm text-muted-foreground hover:text-primary transition-colors"
+        >
+          Administrace
+        </Link>
+      </footer>
     </div>
   );
 };
