@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const Dotaznik = () => {
   const [formData, setFormData] = useState({
@@ -13,11 +13,29 @@ const Dotaznik = () => {
     lastName: "",
     coachingTopic: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("Děkujeme za vyplnění dotazníku!");
-    console.log(formData);
+    setIsSubmitting(true);
+
+    try {
+      const { error } = await supabase.functions.invoke("send-questionnaire", {
+        body: formData,
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      toast.success("Děkujeme za vyplnění dotazníku! E-mail byl odeslán.");
+      setFormData({ firstName: "", lastName: "", coachingTopic: "" });
+    } catch (error) {
+      console.error("Error sending questionnaire:", error);
+      toast.error("Nepodařilo se odeslat dotazník. Zkuste to prosím znovu.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -60,9 +78,10 @@ const Dotaznik = () => {
 
         <Button 
           type="submit"
+          disabled={isSubmitting}
           className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3"
         >
-          Odeslat dotazník
+          {isSubmitting ? "Odesílám..." : "Odeslat dotazník"}
         </Button>
       </form>
     </PageLayout>
