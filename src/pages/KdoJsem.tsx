@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 const KdoJsem = () => {
   return (
-    <PageLayout title="Kdo jsem?">
+    <PageLayout title="O mně">
       <div className="grid md:grid-cols-3 gap-8 items-start">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}

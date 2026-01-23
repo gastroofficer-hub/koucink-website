@@ -6,7 +6,7 @@ import backgroundImage from "@/assets/background.jpg";
 const navigationItems = [
   { icon: CheckCircle, title: "Informovaný souhlas", to: "/informovany-souhlas" },
   { icon: ClipboardList, title: "Dotazník", to: "/dotaznik" },
-  { icon: User, title: "Kdo jsem?", to: "/kdo-jsem" },
+  { icon: User, title: "O mně", to: "/kdo-jsem" },
   { icon: Users, title: "Proč koučink se mnou", to: "/proc-koucink" },
   { icon: Mail, title: "Kontakt", to: "/kontakt" },
 ];
