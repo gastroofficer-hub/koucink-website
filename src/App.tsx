@@ -7,7 +7,7 @@ import Index from "./pages/Index";
 import InformovanySouhlas from "./pages/InformovanySouhlas";
 import Dotaznik from "./pages/Dotaznik";
 import KdoJsem from "./pages/KdoJsem";
-import ProcKoucink from "./pages/ProcKoucink";
+
 import Kontakt from "./pages/Kontakt";
 import Diplomy from "./pages/Diplomy";
 import Auth from "./pages/Auth";
@@ -27,7 +27,7 @@ const App = () => (
           <Route path="/informovany-souhlas" element={<InformovanySouhlas />} />
           <Route path="/dotaznik" element={<Dotaznik />} />
           <Route path="/kdo-jsem" element={<KdoJsem />} />
-          <Route path="/proc-koucink" element={<ProcKoucink />} />
+          
           <Route path="/kontakt" element={<Kontakt />} />
           <Route path="/diplomy" element={<Diplomy />} />
           <Route path="/auth" element={<Auth />} />

@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { CheckCircle, ClipboardList, User, Users, Mail, Award } from "lucide-react";
+import { CheckCircle, ClipboardList, User, Mail, Award } from "lucide-react";
 import { Link } from "react-router-dom";
 import NavigationCard from "@/components/NavigationCard";
 import backgroundImage from "@/assets/background.jpg";
@@ -8,7 +8,6 @@ const navigationItems = [
   { icon: CheckCircle, title: "Informovaný souhlas", to: "/informovany-souhlas" },
   { icon: ClipboardList, title: "Dotazník", to: "/dotaznik" },
   { icon: User, title: "O mně", to: "/kdo-jsem" },
-  { icon: Users, title: "Proč koučink se mnou", to: "/proc-koucink" },
   { icon: Award, title: "Diplomy", to: "/diplomy" },
   { icon: Mail, title: "Kontakt", to: "/kontakt" },
 ];
