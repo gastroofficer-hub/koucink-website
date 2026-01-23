@@ -19,6 +19,10 @@ const Auth = () => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
         if (session) {
+          // Update admin_users with correct user_id if email matches
+          setTimeout(() => {
+            updateAdminUserId(session.user.id, session.user.email || "");
+          }, 0);
           navigate("/admin");
         }
       }
@@ -33,13 +37,21 @@ const Auth = () => {
     return () => subscription.unsubscribe();
   }, [navigate]);
 
+  const updateAdminUserId = async (userId: string, email: string) => {
+    // Try to update admin_users with actual user_id based on email
+    await supabase
+      .from("admin_users")
+      .update({ user_id: userId })
+      .eq("email", email);
+  };
+
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
       if (isSignUp) {
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email,
           password,
           options: {
@@ -47,8 +59,21 @@ const Auth = () => {
           },
         });
         if (error) throw error;
-        toast.success("Registrace úspěšná! Nyní se můžete přihlásit.");
-        setIsSignUp(false);
+        
+        // If this is the first user, make them admin
+        const { count } = await supabase
+          .from("admin_users")
+          .select("*", { count: "exact", head: true });
+        
+        if (count === 0 && data.user) {
+          await supabase.from("admin_users").insert({
+            user_id: data.user.id,
+            email: email,
+          });
+        }
+        
+        toast.success("Registrace úspěšná!");
+        navigate("/admin");
       } else {
         const { error } = await supabase.auth.signInWithPassword({
           email,
