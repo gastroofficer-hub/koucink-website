@@ -4,52 +4,55 @@ import { motion } from "framer-motion";
 const KdoJsem = () => {
   return (
     <PageLayout title="O mně">
-      <div className="grid md:grid-cols-3 gap-8 items-start">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="md:col-span-1"
+      <div className="space-y-12">
+        {/* Sekce Kdo jsem? */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
         >
-          <div className="w-48 h-48 mx-auto md:mx-0 rounded-full bg-gradient-to-br from-soft-green to-primary/20 flex items-center justify-center">
-            <span className="text-6xl">👤</span>
+          <h2 className="text-2xl font-display font-semibold text-primary mb-6">
+            Kdo jsem?
+          </h2>
+          <div className="space-y-4 text-foreground/90 leading-relaxed">
+            <p>
+              Jsem kouč, který pracuje s člověkem tak, aby v sobě objevil to, co je v něm skryté 
+              a dlouho nevyužité. Můj přístup stojí na lidskosti, autenticitě a schopnosti udržet 
+              klid i v náročných situacích. Více než dvacet let služby u Policie ČR a vedení týmu 
+              přes dvacet lidí mi dalo zkušenosti s tlakem, odpovědností a prostředím, které se 
+              neustále mění. Tyto zkušenosti dnes přenáším do své práce s lidmi – jednoduše, 
+              srozumitelně a tak, aby vše, co spolu objevíme, bylo použitelné v běžném životě.
+            </p>
+            <p>
+              Moje hodnoty jsou jasné: říkám věci tak, jak jsou, bez zbytečných frází; ke každému 
+              přistupuji jako k člověku se svým příběhem; a v situacích, které jsou vypjaté, jsem tím, 
+              kdo drží klid a nadhled. Posláním mé práce je pomoci lidem najít a využít jejich vlastní 
+              sílu a schopnosti – to, co v nich je, ale někdy zůstává ukryto pod stresem, povinnostmi 
+              nebo životní zátěží.
+            </p>
           </div>
-        </motion.div>
+        </motion.section>
 
-        <div className="md:col-span-2 space-y-6 text-foreground/90">
-          <p className="text-lg leading-relaxed">
-            Jsem certifikovaný kouč s vášní pro osobní rozvoj a pomáhání lidem dosahovat jejich cílů. 
-            Moje cesta ke koučinku začala, když jsem si uvědomil/a sílu správných otázek a aktivního naslouchání.
-          </p>
-
-          <div className="space-y-4">
-            <h2 className="text-xl font-display font-semibold text-primary">Moje vzdělání a certifikace</h2>
-            <ul className="list-disc list-inside space-y-2 text-foreground/80">
-              <li>Certifikovaný kouč (ICF ACC)</li>
-              <li>Absolvent kurzu systemického koučinku</li>
-              <li>Průběžné vzdělávání v oblasti osobního rozvoje</li>
-            </ul>
+        {/* Sekce Proč se mnou? */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          <h2 className="text-2xl font-display font-semibold text-primary mb-6">
+            Proč se mnou?
+          </h2>
+          <div className="space-y-4 text-foreground/90 leading-relaxed">
+            <p>
+              Vzděláním jsem Bc. v oboru bezpečnostně právních činností ve veřejné správě a Mgr. 
+              v sociálních studiích. Několik let se věnuji také podpoře kolegů v náročných životních 
+              i pracovních situacích. Můj koučovací styl je kombinací účinných nástrojů, zkušeností 
+              z praxe a citlivého přístupu k jedinečnosti každého člověka. Klienti ke mně přicházejí 
+              z různých prostředí – ať už řeší osobní téma, vztah, práci, stres nebo hledání směru. 
+              Vždy pracujeme tak, aby výsledek byl jasný, lidský a skutečný.
+            </p>
           </div>
-
-          <div className="space-y-4">
-            <h2 className="text-xl font-display font-semibold text-primary">Moje hodnoty</h2>
-            <div className="grid grid-cols-2 gap-4">
-              {["Autenticita", "Empatie", "Růst", "Partnerství"].map((value) => (
-                <div 
-                  key={value}
-                  className="bg-soft-green/50 rounded-lg p-4 text-center font-medium text-primary"
-                >
-                  {value}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <p className="text-lg leading-relaxed">
-            Věřím, že každý člověk má v sobě potenciál k růstu a změně. Mojí rolí jako kouče je 
-            vytvořit bezpečný prostor, kde můžete objevit své silné stránky a najít cestu k vašim cílům.
-          </p>
-        </div>
+        </motion.section>
       </div>
     </PageLayout>
   );
