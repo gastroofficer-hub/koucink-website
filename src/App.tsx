@@ -9,6 +9,7 @@ import Dotaznik from "./pages/Dotaznik";
 import KdoJsem from "./pages/KdoJsem";
 import ProcKoucink from "./pages/ProcKoucink";
 import Kontakt from "./pages/Kontakt";
+import Diplomy from "./pages/Diplomy";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +27,7 @@ const App = () => (
           <Route path="/kdo-jsem" element={<KdoJsem />} />
           <Route path="/proc-koucink" element={<ProcKoucink />} />
           <Route path="/kontakt" element={<Kontakt />} />
+          <Route path="/diplomy" element={<Diplomy />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
