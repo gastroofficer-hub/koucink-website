@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 import backgroundImage from "@/assets/background.jpg";
 
 const navigationItems = [
-  { icon: CheckCircle, title: "Informovaný souhlas", to: "/informovany-souhlas" },
+  { icon: CheckCircle, title: "Informační souhlas", to: "/informovany-souhlas" },
   { icon: ClipboardList, title: "Dotazník", to: "/dotaznik" },
   { icon: Award, title: "Diplomy", to: "/diplomy" },
   { icon: Mail, title: "Kontakt", to: "/kontakt" },
