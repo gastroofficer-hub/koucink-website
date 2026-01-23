@@ -1,5 +1,6 @@
 import PageLayout from "@/components/PageLayout";
 import { Mail, MapPin, User } from "lucide-react";
+import coachPhoto from "@/assets/coach-photo.jpg";
 
 const Kontakt = () => {
   return (
@@ -44,12 +45,14 @@ const Kontakt = () => {
           </div>
         </div>
 
-        {/* Coach Photo Placeholder */}
+        {/* Coach Photo */}
         <div className="flex justify-center">
-          <div className="w-64 h-80 md:w-72 md:h-96 bg-white/50 backdrop-blur-sm rounded-2xl border-2 border-dashed border-primary/30 flex items-center justify-center">
-            <p className="text-muted-foreground text-center px-4">
-              Zde bude fotka kouče
-            </p>
+          <div className="w-64 h-80 md:w-72 md:h-96 rounded-2xl overflow-hidden shadow-lg">
+            <img 
+              src={coachPhoto} 
+              alt="Mgr. Bc. Ondřej Zeman - Kouč" 
+              className="w-full h-full object-cover"
+            />
           </div>
         </div>
       </div>
