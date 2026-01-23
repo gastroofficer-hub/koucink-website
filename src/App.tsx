@@ -10,6 +10,8 @@ import KdoJsem from "./pages/KdoJsem";
 import ProcKoucink from "./pages/ProcKoucink";
 import Kontakt from "./pages/Kontakt";
 import Diplomy from "./pages/Diplomy";
+import Auth from "./pages/Auth";
+import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +30,8 @@ const App = () => (
           <Route path="/proc-koucink" element={<ProcKoucink />} />
           <Route path="/kontakt" element={<Kontakt />} />
           <Route path="/diplomy" element={<Diplomy />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/admin" element={<Admin />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
