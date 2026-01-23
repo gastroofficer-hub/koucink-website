@@ -47,6 +47,10 @@ const Footer = () => {
           >
             Administrace
           </Link>
+
+          <p className="text-warm-cream/50">
+            © {new Date().getFullYear()} Mgr. Bc. Ondřej Zeman. Všechna práva vyhrazena.
+          </p>
           
           <p className="font-body">
             webcreator{" "}
