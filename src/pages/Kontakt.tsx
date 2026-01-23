@@ -1,28 +1,10 @@
 import PageLayout from "@/components/PageLayout";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
 import { Mail, MapPin, User } from "lucide-react";
-import { useState } from "react";
-import { toast } from "sonner";
 
 const Kontakt = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    toast.success("Zpráva byla odeslána! Brzy se vám ozvu.");
-    setFormData({ name: "", email: "", message: "" });
-  };
-
   return (
     <PageLayout title="Kontakt">
-      <div className="grid md:grid-cols-2 gap-12">
+      <div className="grid md:grid-cols-2 gap-12 items-center">
         <div className="space-y-8">
           <p className="text-lg text-foreground/90 leading-relaxed">
             Máte zájem o koučink nebo máte jakékoliv dotazy? Neváhejte mě kontaktovat. 
@@ -62,49 +44,14 @@ const Kontakt = () => {
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="space-y-2">
-            <Label htmlFor="contact-name" className="text-foreground font-medium">Vaše jméno</Label>
-            <Input
-              id="contact-name"
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              className="bg-white/50 border-primary/20 focus:border-primary"
-              required
-            />
+        {/* Coach Photo Placeholder */}
+        <div className="flex justify-center">
+          <div className="w-64 h-80 md:w-72 md:h-96 bg-white/50 backdrop-blur-sm rounded-2xl border-2 border-dashed border-primary/30 flex items-center justify-center">
+            <p className="text-muted-foreground text-center px-4">
+              Zde bude fotka kouče
+            </p>
           </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="contact-email" className="text-foreground font-medium">Váš e-mail</Label>
-            <Input
-              id="contact-email"
-              type="email"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="bg-white/50 border-primary/20 focus:border-primary"
-              required
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="contact-message" className="text-foreground font-medium">Vaše zpráva</Label>
-            <Textarea
-              id="contact-message"
-              value={formData.message}
-              onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-              className="bg-white/50 border-primary/20 focus:border-primary min-h-[150px]"
-              placeholder="Napište mi, co vás zajímá..."
-              required
-            />
-          </div>
-
-          <Button 
-            type="submit"
-            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-3"
-          >
-            Odeslat zprávu
-          </Button>
-        </form>
+        </div>
       </div>
     </PageLayout>
   );
