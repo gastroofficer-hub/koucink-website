@@ -15,6 +15,7 @@ const Dotaznik = () => {
     phone: "",
     maritalStatus: "",
     maritalStatusOther: "",
+    sessionType: "",
     coachingTopic: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -33,7 +34,7 @@ const Dotaznik = () => {
       }
 
       toast.success("Děkujeme za vyplnění dotazníku! E-mail byl odeslán.");
-      setFormData({ firstName: "", lastName: "", email: "", phone: "", maritalStatus: "", maritalStatusOther: "", coachingTopic: "" });
+      setFormData({ firstName: "", lastName: "", email: "", phone: "", maritalStatus: "", maritalStatusOther: "", sessionType: "", coachingTopic: "" });
     } catch (error) {
       console.error("Error sending questionnaire:", error);
       toast.error("Nepodařilo se odeslat dotazník. Zkuste to prosím znovu.");
@@ -120,6 +121,35 @@ const Dotaznik = () => {
               placeholder="Upřesněte váš rodinný stav..."
             />
           )}
+        </div>
+
+        <div className="space-y-3">
+          <Label className="text-foreground font-medium">Preferovaná forma sezení *</Label>
+          <div className="flex flex-wrap gap-4">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="radio"
+                name="sessionType"
+                value="osobní"
+                checked={formData.sessionType === "osobní"}
+                onChange={(e) => setFormData({ ...formData, sessionType: e.target.value })}
+                className="w-4 h-4 text-primary border-primary/30 focus:ring-primary"
+                required
+              />
+              <span className="text-foreground">Osobní sezení</span>
+            </label>
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="radio"
+                name="sessionType"
+                value="online"
+                checked={formData.sessionType === "online"}
+                onChange={(e) => setFormData({ ...formData, sessionType: e.target.value })}
+                className="w-4 h-4 text-primary border-primary/30 focus:ring-primary"
+              />
+              <span className="text-foreground">Online sezení</span>
+            </label>
+          </div>
         </div>
 
         <div className="space-y-2">

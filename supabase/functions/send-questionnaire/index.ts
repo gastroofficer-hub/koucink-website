@@ -16,6 +16,7 @@ interface QuestionnaireRequest {
   phone: string;
   maritalStatus: string;
   maritalStatusOther: string;
+  sessionType: string;
   coachingTopic: string;
 }
 
@@ -28,7 +29,7 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const { firstName, lastName, email, phone, maritalStatus, maritalStatusOther, coachingTopic }: QuestionnaireRequest = await req.json();
+    const { firstName, lastName, email, phone, maritalStatus, maritalStatusOther, sessionType, coachingTopic }: QuestionnaireRequest = await req.json();
 
     console.log("Processing questionnaire from:", firstName, lastName, email);
 
@@ -48,6 +49,7 @@ const handler = async (req: Request): Promise<Response> => {
         <p><strong>E-mail:</strong> ${email}</p>
         <p><strong>Telefon:</strong> ${phone}</p>
         <p><strong>Rodinný stav:</strong> ${formattedMaritalStatus}</p>
+        <p><strong>Forma sezení:</strong> ${sessionType === "osobní" ? "Osobní sezení" : "Online sezení"}</p>
         <p><strong>Čeho se bude koučink týkat:</strong></p>
         <p>${coachingTopic}</p>
       `,
