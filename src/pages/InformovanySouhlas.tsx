@@ -8,7 +8,7 @@ const InformovanySouhlas = () => {
   };
 
   return (
-    <PageLayout title="Informovaný souhlas">
+    <PageLayout title="Informační souhlas">
       <div className="space-y-6">
         <div className="flex justify-end print:hidden">
           <Button
