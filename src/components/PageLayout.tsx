@@ -3,7 +3,6 @@ import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ReactNode } from "react";
 import backgroundImage from "@/assets/background.jpg";
-import Footer from "@/components/Footer";
 
 interface PageLayoutProps {
   title: string;
@@ -44,7 +43,6 @@ const PageLayout = ({ title, children }: PageLayoutProps) => {
             {children}
           </motion.div>
         </div>
-        <Footer />
       </div>
     </div>
   );
