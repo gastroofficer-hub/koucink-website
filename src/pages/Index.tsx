@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { CheckCircle, ClipboardList, Mail, Award } from "lucide-react";
 import { Link } from "react-router-dom";
 import NavigationCard from "@/components/NavigationCard";
+import Footer from "@/components/Footer";
 import backgroundImage from "@/assets/background.jpg";
 
 const navigationItems = [
@@ -115,14 +116,7 @@ const Index = () => {
       </div>
 
       {/* Footer */}
-      <footer className="px-6 py-4 text-center">
-        <Link 
-          to="/admin" 
-          className="text-sm text-muted-foreground hover:text-primary transition-colors"
-        >
-          Administrace
-        </Link>
-      </footer>
+      <Footer />
     </div>
   );
 };
