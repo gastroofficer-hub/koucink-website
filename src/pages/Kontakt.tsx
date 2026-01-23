@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, MapPin, User } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -26,27 +26,17 @@ const Kontakt = () => {
         <div className="space-y-8">
           <p className="text-lg text-foreground/90 leading-relaxed">
             Máte zájem o koučink nebo máte jakékoliv dotazy? Neváhejte mě kontaktovat. 
-            Rád/a vám odpovím a společně zjistíme, jak vám mohu pomoci.
+            Rád vám odpovím a společně zjistíme, jak vám mohu pomoci.
           </p>
 
           <div className="space-y-6">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-soft-green rounded-full flex items-center justify-center">
-                <Mail className="w-5 h-5 text-primary" />
+                <User className="w-5 h-5 text-primary" />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">E-mail</p>
-                <p className="font-medium text-foreground">koucink@example.cz</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-soft-green rounded-full flex items-center justify-center">
-                <Phone className="w-5 h-5 text-primary" />
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Telefon</p>
-                <p className="font-medium text-foreground">+420 123 456 789</p>
+                <p className="text-sm text-muted-foreground">Jméno</p>
+                <p className="font-medium text-foreground">Mgr. Bc. Ondřej Zeman</p>
               </div>
             </div>
 
@@ -55,8 +45,18 @@ const Kontakt = () => {
                 <MapPin className="w-5 h-5 text-primary" />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Lokalita</p>
-                <p className="font-medium text-foreground">Online i osobně v Praze</p>
+                <p className="text-sm text-muted-foreground">Adresa</p>
+                <p className="font-medium text-foreground">Lanškroun, PSČ: 563 01</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-soft-green rounded-full flex items-center justify-center">
+                <Mail className="w-5 h-5 text-primary" />
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">E-mail</p>
+                <p className="font-medium text-foreground">Zeman.o82@gmail.com</p>
               </div>
             </div>
           </div>
