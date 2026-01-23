@@ -13,6 +13,7 @@ const Auth = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
+  const [isResetPassword, setIsResetPassword] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -96,6 +97,26 @@ const Auth = () => {
     }
   };
 
+  const handleResetPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/admin`,
+      });
+      
+      if (error) throw error;
+      
+      toast.success("E-mail s odkazem pro reset hesla byl odeslán!");
+      setIsResetPassword(false);
+    } catch (error: any) {
+      toast.error(error.message || "Nepodařilo se odeslat e-mail pro reset hesla.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div
       className="min-h-screen bg-cover bg-center flex items-center justify-center p-6"
@@ -108,55 +129,112 @@ const Auth = () => {
         className="glass-card rounded-2xl p-8 w-full max-w-md"
       >
         <h1 className="text-2xl font-display font-semibold text-primary text-center mb-6">
-          {isSignUp ? "Registrace" : "Přihlášení do administrace"}
+          {isResetPassword 
+            ? "Obnovení hesla" 
+            : isSignUp 
+              ? "Registrace" 
+              : "Přihlášení do administrace"}
         </h1>
 
-        <form onSubmit={handleAuth} className="space-y-5">
-          <div className="space-y-2">
-            <Label htmlFor="email" className="text-foreground">E-mail</Label>
-            <Input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="bg-white/50 border-primary/20 focus:border-primary"
-              required
-            />
-          </div>
+        {isResetPassword ? (
+          <form onSubmit={handleResetPassword} className="space-y-5">
+            <div className="space-y-2">
+              <Label htmlFor="email" className="text-foreground">E-mail</Label>
+              <Input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="bg-white/50 border-primary/20 focus:border-primary"
+                placeholder="Zadejte váš e-mail"
+                required
+              />
+            </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="password" className="text-foreground">Heslo</Label>
-            <Input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="bg-white/50 border-primary/20 focus:border-primary"
-              minLength={6}
-              required
-            />
-          </div>
+            <p className="text-sm text-muted-foreground">
+              Na váš e-mail bude zaslán odkaz pro obnovení hesla.
+            </p>
 
-          <Button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
-          >
-            {loading ? "Načítání..." : isSignUp ? "Registrovat" : "Přihlásit se"}
-          </Button>
-        </form>
+            <Button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+            >
+              {loading ? "Odesílám..." : "Odeslat odkaz pro reset"}
+            </Button>
 
-        <div className="mt-6 text-center">
-          <button
-            type="button"
-            onClick={() => setIsSignUp(!isSignUp)}
-            className="text-sm text-muted-foreground hover:text-primary transition-colors"
-          >
-            {isSignUp
-              ? "Již máte účet? Přihlaste se"
-              : "Nemáte účet? Zaregistrujte se"}
-          </button>
-        </div>
+            <div className="text-center">
+              <button
+                type="button"
+                onClick={() => setIsResetPassword(false)}
+                className="text-sm text-muted-foreground hover:text-primary transition-colors"
+              >
+                Zpět na přihlášení
+              </button>
+            </div>
+          </form>
+        ) : (
+          <>
+            <form onSubmit={handleAuth} className="space-y-5">
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-foreground">E-mail</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="bg-white/50 border-primary/20 focus:border-primary"
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="password" className="text-foreground">Heslo</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="bg-white/50 border-primary/20 focus:border-primary"
+                  minLength={6}
+                  required
+                />
+              </div>
+
+              {!isSignUp && (
+                <div className="text-right">
+                  <button
+                    type="button"
+                    onClick={() => setIsResetPassword(true)}
+                    className="text-sm text-gold hover:text-primary transition-colors"
+                  >
+                    Zapomenuté heslo?
+                  </button>
+                </div>
+              )}
+
+              <Button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+              >
+                {loading ? "Načítání..." : isSignUp ? "Registrovat" : "Přihlásit se"}
+              </Button>
+            </form>
+
+            <div className="mt-6 text-center">
+              <button
+                type="button"
+                onClick={() => setIsSignUp(!isSignUp)}
+                className="text-sm text-muted-foreground hover:text-primary transition-colors"
+              >
+                {isSignUp
+                  ? "Již máte účet? Přihlaste se"
+                  : "Nemáte účet? Zaregistrujte se"}
+              </button>
+            </div>
+          </>
+        )}
       </motion.div>
     </div>
   );
