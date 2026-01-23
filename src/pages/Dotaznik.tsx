@@ -11,6 +11,9 @@ const Dotaznik = () => {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
+    email: "",
+    phone: "",
+    maritalStatus: "",
     coachingTopic: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -29,7 +32,7 @@ const Dotaznik = () => {
       }
 
       toast.success("Děkujeme za vyplnění dotazníku! E-mail byl odeslán.");
-      setFormData({ firstName: "", lastName: "", coachingTopic: "" });
+      setFormData({ firstName: "", lastName: "", email: "", phone: "", maritalStatus: "", coachingTopic: "" });
     } catch (error) {
       console.error("Error sending questionnaire:", error);
       toast.error("Nepodařilo se odeslat dotazník. Zkuste to prosím znovu.");
@@ -62,6 +65,50 @@ const Dotaznik = () => {
               required
             />
           </div>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <Label htmlFor="email" className="text-foreground font-medium">E-mail *</Label>
+            <Input
+              id="email"
+              type="email"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              className="bg-white/50 border-primary/20 focus:border-primary"
+              placeholder="vas@email.cz"
+              required
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="phone" className="text-foreground font-medium">Telefon *</Label>
+            <Input
+              id="phone"
+              type="tel"
+              value={formData.phone}
+              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+              className="bg-white/50 border-primary/20 focus:border-primary"
+              placeholder="+420 xxx xxx xxx"
+              required
+            />
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="maritalStatus" className="text-foreground font-medium">Rodinný stav</Label>
+          <select
+            id="maritalStatus"
+            value={formData.maritalStatus}
+            onChange={(e) => setFormData({ ...formData, maritalStatus: e.target.value })}
+            className="flex h-10 w-full rounded-md border border-primary/20 bg-white/50 px-3 py-2 text-base ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:text-sm"
+          >
+            <option value="">Vyberte...</option>
+            <option value="svobodný/á">Svobodný/á</option>
+            <option value="ženatý/vdaná">Ženatý/Vdaná</option>
+            <option value="rozvedený/á">Rozvedený/á</option>
+            <option value="vdovec/vdova">Vdovec/Vdova</option>
+            <option value="partner/partnerka">Ve vztahu</option>
+          </select>
         </div>
 
         <div className="space-y-2">

@@ -12,6 +12,9 @@ const corsHeaders = {
 interface QuestionnaireRequest {
   firstName: string;
   lastName: string;
+  email: string;
+  phone: string;
+  maritalStatus: string;
   coachingTopic: string;
 }
 
@@ -24,9 +27,9 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const { firstName, lastName, coachingTopic }: QuestionnaireRequest = await req.json();
+    const { firstName, lastName, email, phone, maritalStatus, coachingTopic }: QuestionnaireRequest = await req.json();
 
-    console.log("Processing questionnaire from:", firstName, lastName);
+    console.log("Processing questionnaire from:", firstName, lastName, email);
 
     const emailResponse = await resend.emails.send({
       from: "Dotazník <onboarding@resend.dev>",
@@ -36,6 +39,9 @@ const handler = async (req: Request): Promise<Response> => {
         <h1>Nový dotazník</h1>
         <p><strong>Jméno:</strong> ${firstName}</p>
         <p><strong>Příjmení:</strong> ${lastName}</p>
+        <p><strong>E-mail:</strong> ${email}</p>
+        <p><strong>Telefon:</strong> ${phone}</p>
+        <p><strong>Rodinný stav:</strong> ${maritalStatus || "Nevyplněno"}</p>
         <p><strong>Čeho se bude koučink týkat:</strong></p>
         <p>${coachingTopic}</p>
       `,
