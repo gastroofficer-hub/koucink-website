@@ -14,6 +14,7 @@ const Dotaznik = () => {
     email: "",
     phone: "",
     maritalStatus: "",
+    maritalStatusOther: "",
     coachingTopic: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -32,7 +33,7 @@ const Dotaznik = () => {
       }
 
       toast.success("Děkujeme za vyplnění dotazníku! E-mail byl odeslán.");
-      setFormData({ firstName: "", lastName: "", email: "", phone: "", maritalStatus: "", coachingTopic: "" });
+      setFormData({ firstName: "", lastName: "", email: "", phone: "", maritalStatus: "", maritalStatusOther: "", coachingTopic: "" });
     } catch (error) {
       console.error("Error sending questionnaire:", error);
       toast.error("Nepodařilo se odeslat dotazník. Zkuste to prosím znovu.");
@@ -99,7 +100,7 @@ const Dotaznik = () => {
           <select
             id="maritalStatus"
             value={formData.maritalStatus}
-            onChange={(e) => setFormData({ ...formData, maritalStatus: e.target.value })}
+            onChange={(e) => setFormData({ ...formData, maritalStatus: e.target.value, maritalStatusOther: e.target.value === "jiné" ? formData.maritalStatusOther : "" })}
             className="flex h-10 w-full rounded-md border border-primary/20 bg-white/50 px-3 py-2 text-base ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:text-sm"
           >
             <option value="">Vyberte...</option>
@@ -108,7 +109,17 @@ const Dotaznik = () => {
             <option value="rozvedený/á">Rozvedený/á</option>
             <option value="vdovec/vdova">Vdovec/Vdova</option>
             <option value="partner/partnerka">Ve vztahu</option>
+            <option value="jiné">Jiné (napište)</option>
           </select>
+          {formData.maritalStatus === "jiné" && (
+            <Input
+              id="maritalStatusOther"
+              value={formData.maritalStatusOther}
+              onChange={(e) => setFormData({ ...formData, maritalStatusOther: e.target.value })}
+              className="bg-white/50 border-primary/20 focus:border-primary mt-2"
+              placeholder="Upřesněte váš rodinný stav..."
+            />
+          )}
         </div>
 
         <div className="space-y-2">

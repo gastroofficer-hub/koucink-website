@@ -15,6 +15,7 @@ interface QuestionnaireRequest {
   email: string;
   phone: string;
   maritalStatus: string;
+  maritalStatusOther: string;
   coachingTopic: string;
 }
 
@@ -27,9 +28,14 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const { firstName, lastName, email, phone, maritalStatus, coachingTopic }: QuestionnaireRequest = await req.json();
+    const { firstName, lastName, email, phone, maritalStatus, maritalStatusOther, coachingTopic }: QuestionnaireRequest = await req.json();
 
     console.log("Processing questionnaire from:", firstName, lastName, email);
+
+    // Format marital status - if "jiné" is selected, use the custom value
+    const formattedMaritalStatus = maritalStatus === "jiné" && maritalStatusOther 
+      ? `Jiné: ${maritalStatusOther}` 
+      : maritalStatus || "Nevyplněno";
 
     const emailResponse = await resend.emails.send({
       from: "Dotazník <onboarding@resend.dev>",
@@ -41,7 +47,7 @@ const handler = async (req: Request): Promise<Response> => {
         <p><strong>Příjmení:</strong> ${lastName}</p>
         <p><strong>E-mail:</strong> ${email}</p>
         <p><strong>Telefon:</strong> ${phone}</p>
-        <p><strong>Rodinný stav:</strong> ${maritalStatus || "Nevyplněno"}</p>
+        <p><strong>Rodinný stav:</strong> ${formattedMaritalStatus}</p>
         <p><strong>Čeho se bude koučink týkat:</strong></p>
         <p>${coachingTopic}</p>
       `,
