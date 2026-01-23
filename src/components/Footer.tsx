@@ -2,55 +2,59 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <footer className="bg-primary/95 backdrop-blur-sm text-primary-foreground py-8 px-6">
+    <footer className="bg-forest/90 backdrop-blur-md text-warm-cream py-10 px-6 border-t border-gold/20">
       <div className="max-w-6xl mx-auto">
         {/* Navigation Links */}
-        <div className="flex flex-wrap justify-center gap-4 md:gap-8 mb-6">
+        <div className="flex flex-wrap justify-center gap-6 md:gap-10 mb-8">
           <Link 
             to="/informovany-souhlas" 
-            className="text-sm hover:text-accent transition-colors"
+            className="text-sm font-medium hover:text-gold transition-colors duration-300"
           >
             Informovaný souhlas
           </Link>
           <Link 
             to="/dotaznik" 
-            className="text-sm hover:text-accent transition-colors"
+            className="text-sm font-medium hover:text-gold transition-colors duration-300"
           >
             Dotazník
           </Link>
           <Link 
             to="/diplomy" 
-            className="text-sm hover:text-accent transition-colors"
+            className="text-sm font-medium hover:text-gold transition-colors duration-300"
           >
             Diplomy
           </Link>
           <Link 
             to="/kontakt" 
-            className="text-sm hover:text-accent transition-colors"
+            className="text-sm font-medium hover:text-gold transition-colors duration-300"
           >
             Kontakt
           </Link>
         </div>
 
-        {/* Divider */}
-        <div className="w-full h-px bg-primary-foreground/20 mb-6" />
+        {/* Decorative Divider */}
+        <div className="flex items-center justify-center gap-4 mb-8">
+          <div className="w-16 h-px bg-gradient-to-r from-transparent to-gold/50" />
+          <div className="w-2 h-2 rounded-full bg-gold/60" />
+          <div className="w-16 h-px bg-gradient-to-l from-transparent to-gold/50" />
+        </div>
 
         {/* Bottom row */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-primary-foreground/70">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-warm-cream/70">
           <Link 
             to="/admin" 
-            className="hover:text-primary-foreground transition-colors"
+            className="hover:text-gold transition-colors duration-300"
           >
             Administrace
           </Link>
           
-          <p>
+          <p className="font-body">
             webcreator{" "}
             <a 
               href="https://abano.monster" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-accent hover:text-primary-foreground transition-colors font-medium"
+              className="text-gold hover:text-warm-cream transition-colors duration-300 font-display font-medium"
             >
               Abanooo
             </a>
