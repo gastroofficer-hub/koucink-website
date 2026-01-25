@@ -91,11 +91,13 @@ const Index = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.6 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.98 }}
         >
           <Link to="/dotaznik">
             <Button 
               size="lg" 
-              className="bg-primary hover:bg-primary/90 text-primary-foreground px-10 py-6 text-lg font-display font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+              className="bg-white/30 backdrop-blur-md border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground px-10 py-6 text-lg font-display font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
             >
               <CalendarCheck className="w-5 h-5 mr-2" />
               Rezervuj termín
