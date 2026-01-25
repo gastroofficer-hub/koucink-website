@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { CheckCircle, ClipboardList, Mail, Award } from "lucide-react";
+import { CheckCircle, ClipboardList, Mail, Award, ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
 import NavigationCard from "@/components/NavigationCard";
 import Footer from "@/components/Footer";
@@ -58,6 +58,28 @@ const Index = () => {
               />
             ))}
           </div>
+        </div>
+
+        {/* Animated Scroll Down Arrow */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1, duration: 0.5 }}
+            className="flex flex-col items-center cursor-pointer"
+            onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
+          >
+            <motion.div
+              animate={{ y: [0, 10, 0] }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            >
+              <ChevronDown className="w-8 h-8 text-primary/70" />
+            </motion.div>
+          </motion.div>
         </div>
       </div>
 
