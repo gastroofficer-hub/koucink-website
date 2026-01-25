@@ -44,7 +44,7 @@ const Dotaznik = () => {
   };
 
   return (
-    <PageLayout title="Dotazník">
+    <PageLayout title="Rezervace">
       <form onSubmit={handleSubmit} className="space-y-8">
         <div className="grid md:grid-cols-2 gap-6">
           <div className="space-y-2">
