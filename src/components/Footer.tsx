@@ -5,15 +5,6 @@ const Footer = () => {
   return (
     <footer className="bg-forest/90 backdrop-blur-md text-warm-cream py-10 px-6 border-t border-gold/20">
       <div className="max-w-6xl mx-auto">
-        {/* Logo */}
-        <div className="flex justify-center mb-8">
-          <img 
-            src={logo} 
-            alt="Zeman - koučink" 
-            className="h-20 md:h-24 w-auto"
-          />
-        </div>
-
         {/* Navigation Links */}
         <div className="flex flex-wrap justify-center gap-6 md:gap-10 mb-8">
           <Link 
@@ -58,9 +49,16 @@ const Footer = () => {
             Administrace
           </Link>
 
-          <p className="text-warm-cream/50">
-            © {new Date().getFullYear()} Mgr. Bc. Ondřej Zeman. Všechna práva vyhrazena.
-          </p>
+          <div className="flex items-center gap-3">
+            <img 
+              src={logo} 
+              alt="Zeman - koučink" 
+              className="h-8 w-auto"
+            />
+            <p className="text-warm-cream/50">
+              © {new Date().getFullYear()} Mgr. Bc. Ondřej Zeman. Všechna práva vyhrazena.
+            </p>
+          </div>
           
           <p className="font-body">
             webcreator{" "}
