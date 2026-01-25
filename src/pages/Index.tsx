@@ -175,6 +175,59 @@ const Index = () => {
                 ))}
               </div>
             </div>
+
+            <div>
+              <h3 className="text-xl font-display font-semibold text-primary mb-4">
+                Jak probíhá koučink
+              </h3>
+              <div className="space-y-6 text-foreground/90 leading-relaxed">
+                <div className="flex gap-4">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-semibold">1</div>
+                  <div>
+                    <h4 className="font-semibold text-primary mb-1">Kontakt & objednávka</h4>
+                    <p>Napiš mi email nebo vyplň formulář na webu. Popiš, s čím potřebuješ pomoct (stres, kariéra, vztahy...). Zaručeně odpovídám do 24 hodin s návrhem volných termínů.</p>
+                  </div>
+                </div>
+
+                <div className="flex gap-4">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-semibold">2</div>
+                  <div>
+                    <h4 className="font-semibold text-primary mb-1">Předchozí volný rozhovor</h4>
+                    <p>15 minutová zdarma telefonická volba. Zjistíme, jestli si sedíme, probereme tvé cíle a domluvíme první sezení.</p>
+                  </div>
+                </div>
+
+                <div className="flex gap-4">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-semibold">3</div>
+                  <div>
+                    <h4 className="font-semibold text-primary mb-1">Sjednání termínu & platba</h4>
+                    <p>Vybereme si první sezení (online/osobně). Pošlu ti fakturu a informační souhlas k podpisu. Zaplatíš zálohu a podepíšeš.</p>
+                  </div>
+                </div>
+
+                <div className="flex gap-4">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-semibold">4</div>
+                  <div>
+                    <h4 className="font-semibold text-primary mb-1">Příprava na sezení</h4>
+                    <p>Pošlu ti krátký přehled: co očekávat, jak se připravit (co si přinést, na co se zamyslet). Dostaneš i link na Zoom (online) nebo adresu (osobní schůzka).</p>
+                  </div>
+                </div>
+
+                <div className="flex gap-4">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-semibold">5</div>
+                  <div>
+                    <h4 className="font-semibold text-primary mb-1">První sezení</h4>
+                    <p>60 minut intenzivní práce. Zaměříme se na tvůj hlavní cíl, najdeme první akční kroky. Po sezení dostaneš shrnutí + "domácí úkol".</p>
+                    <div className="mt-3 flex flex-wrap gap-3 text-sm">
+                      <span className="px-3 py-1 bg-primary/10 rounded-full">Online: Zoom, Skype</span>
+                      <span className="px-3 py-1 bg-primary/10 rounded-full">Osobně: Lanškroun</span>
+                      <span className="px-3 py-1 bg-primary/10 rounded-full">Délka: 60 minut</span>
+                      <span className="px-3 py-1 bg-primary/10 rounded-full">Frekvence: 1–2× měsíčně</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </motion.div>
       </div>
