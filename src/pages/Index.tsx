@@ -223,7 +223,7 @@ const Index = () => {
 
             <div>
               <h3 className="text-xl font-display font-semibold text-primary mb-4">
-                Jak probíhá koučink
+                Jak probíhá koučink?
               </h3>
               <div className="space-y-6 text-foreground/90 leading-relaxed">
                 {jakProbiha.steps.map((step, index) => (
