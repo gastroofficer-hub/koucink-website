@@ -4,8 +4,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { Upload, Trash2, LogOut, ArrowLeft, UserPlus, Users, Shield } from "lucide-react";
+import { Upload, Trash2, LogOut, ArrowLeft, UserPlus, Users, Shield, FileText, Phone, Plus, X, Save } from "lucide-react";
 import { motion } from "framer-motion";
 import backgroundImage from "@/assets/background.jpg";
 import { Link } from "react-router-dom";
@@ -26,6 +27,26 @@ interface AdminUser {
   created_at: string;
 }
 
+interface Section {
+  title: string;
+  items?: string[];
+  text?: string;
+}
+
+interface InformacniSouhlasContent {
+  intro: string;
+  sections: Section[];
+}
+
+interface KontaktContent {
+  intro: string;
+  name: string;
+  address: string;
+  email: string;
+  phone: string;
+  photo_url: string;
+}
+
 const Admin = () => {
   const [diplomas, setDiplomas] = useState<Diploma[]>([]);
   const [admins, setAdmins] = useState<AdminUser[]>([]);
@@ -37,6 +58,23 @@ const Admin = () => {
   const [currentUserEmail, setCurrentUserEmail] = useState("");
   const [newAdminEmail, setNewAdminEmail] = useState("");
   const [addingAdmin, setAddingAdmin] = useState(false);
+  
+  // Content states
+  const [informacniSouhlas, setInformacniSouhlas] = useState<InformacniSouhlasContent>({
+    intro: "",
+    sections: []
+  });
+  const [kontakt, setKontakt] = useState<KontaktContent>({
+    intro: "",
+    name: "",
+    address: "",
+    email: "",
+    phone: "",
+    photo_url: ""
+  });
+  const [savingContent, setSavingContent] = useState(false);
+  const [contactPhotoFile, setContactPhotoFile] = useState<File | null>(null);
+  
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -71,9 +109,26 @@ const Admin = () => {
       setIsAdmin(true);
       fetchDiplomas();
       fetchAdmins();
+      fetchSiteContent();
     } else {
       setIsAdmin(false);
       setLoading(false);
+    }
+  };
+
+  const fetchSiteContent = async () => {
+    const { data, error } = await supabase
+      .from("site_content")
+      .select("*");
+
+    if (data) {
+      data.forEach((item: { key: string; content: unknown }) => {
+        if (item.key === "informacni_souhlas") {
+          setInformacniSouhlas(item.content as InformacniSouhlasContent);
+        } else if (item.key === "kontakt") {
+          setKontakt(item.content as KontaktContent);
+        }
+      });
     }
   };
 
@@ -140,8 +195,9 @@ const Admin = () => {
       setTitle("");
       setFile(null);
       fetchDiplomas();
-    } catch (error: any) {
-      toast.error("Chyba při nahrávání: " + error.message);
+    } catch (error: unknown) {
+      const err = error as Error;
+      toast.error("Chyba při nahrávání: " + err.message);
     } finally {
       setUploading(false);
     }
@@ -166,8 +222,9 @@ const Admin = () => {
 
       toast.success("Diplom byl smazán.");
       fetchDiplomas();
-    } catch (error: any) {
-      toast.error("Chyba při mazání: " + error.message);
+    } catch (error: unknown) {
+      const err = error as Error;
+      toast.error("Chyba při mazání: " + err.message);
     }
   };
 
@@ -181,10 +238,8 @@ const Admin = () => {
     setAddingAdmin(true);
 
     try {
-      // First, check if user exists in auth
-      // We'll add them by email - they need to register first
       const { error } = await supabase.from("admin_users").insert({
-        user_id: crypto.randomUUID(), // Temporary - will be updated when user registers
+        user_id: crypto.randomUUID(),
         email: newAdminEmail.trim(),
       });
 
@@ -199,8 +254,9 @@ const Admin = () => {
         setNewAdminEmail("");
         fetchAdmins();
       }
-    } catch (error: any) {
-      toast.error("Chyba: " + error.message);
+    } catch (error: unknown) {
+      const err = error as Error;
+      toast.error("Chyba: " + err.message);
     } finally {
       setAddingAdmin(false);
     }
@@ -223,9 +279,95 @@ const Admin = () => {
 
       toast.success("Admin byl odebrán.");
       fetchAdmins();
-    } catch (error: any) {
-      toast.error("Chyba: " + error.message);
+    } catch (error: unknown) {
+      const err = error as Error;
+      toast.error("Chyba: " + err.message);
     }
+  };
+
+  const handleSaveInformacniSouhlas = async () => {
+    setSavingContent(true);
+    try {
+      const { error } = await supabase
+        .from("site_content")
+        .update({ content: JSON.parse(JSON.stringify(informacniSouhlas)), updated_at: new Date().toISOString() })
+        .eq("key", "informacni_souhlas");
+
+      if (error) throw error;
+      toast.success("Informační souhlas byl uložen!");
+    } catch (error: unknown) {
+      const err = error as Error;
+      toast.error("Chyba při ukládání: " + err.message);
+    } finally {
+      setSavingContent(false);
+    }
+  };
+
+  const handleSaveKontakt = async () => {
+    setSavingContent(true);
+    try {
+      let photoUrl = kontakt.photo_url;
+
+      // Upload new photo if selected
+      if (contactPhotoFile) {
+        const fileExt = contactPhotoFile.name.split(".").pop();
+        const fileName = `coach-photo-${Date.now()}.${fileExt}`;
+
+        const { error: uploadError } = await supabase.storage
+          .from("contact-photos")
+          .upload(fileName, contactPhotoFile);
+
+        if (uploadError) throw uploadError;
+
+        const { data: urlData } = supabase.storage
+          .from("contact-photos")
+          .getPublicUrl(fileName);
+
+        photoUrl = urlData.publicUrl;
+      }
+
+      const { error } = await supabase
+        .from("site_content")
+        .update({ 
+          content: JSON.parse(JSON.stringify({ ...kontakt, photo_url: photoUrl })), 
+          updated_at: new Date().toISOString() 
+        })
+        .eq("key", "kontakt");
+
+      if (error) throw error;
+      
+      setKontakt(prev => ({ ...prev, photo_url: photoUrl }));
+      setContactPhotoFile(null);
+      toast.success("Kontakt byl uložen!");
+    } catch (error: unknown) {
+      const err = error as Error;
+      toast.error("Chyba při ukládání: " + err.message);
+    } finally {
+      setSavingContent(false);
+    }
+  };
+
+  const addSection = () => {
+    setInformacniSouhlas(prev => ({
+      ...prev,
+      sections: [...prev.sections, { title: "", text: "" }]
+    }));
+  };
+
+  const removeSection = (index: number) => {
+    setInformacniSouhlas(prev => ({
+      ...prev,
+      sections: prev.sections.filter((_, i) => i !== index)
+    }));
+  };
+
+  const updateSection = (index: number, field: keyof Section, value: string | string[]) => {
+    setInformacniSouhlas(prev => ({
+      ...prev,
+      sections: prev.sections.map((section, i) => 
+        i === index ? { ...section, [field]: value } : section
+      )
+    }));
   };
 
   const handleLogout = async () => {
@@ -298,10 +440,18 @@ const Admin = () => {
           </div>
 
           <Tabs defaultValue="diplomas" className="space-y-6">
-            <TabsList className="glass-card p-1">
+            <TabsList className="glass-card p-1 flex-wrap h-auto">
               <TabsTrigger value="diplomas" className="gap-2">
                 <Upload className="w-4 h-4" />
                 Diplomy
+              </TabsTrigger>
+              <TabsTrigger value="informacni-souhlas" className="gap-2">
+                <FileText className="w-4 h-4" />
+                Informační souhlas
+              </TabsTrigger>
+              <TabsTrigger value="kontakt" className="gap-2">
+                <Phone className="w-4 h-4" />
+                Kontakt
               </TabsTrigger>
               <TabsTrigger value="admins" className="gap-2">
                 <Users className="w-4 h-4" />
@@ -408,6 +558,197 @@ const Admin = () => {
                     ))}
                   </div>
                 )}
+              </motion.div>
+            </TabsContent>
+
+            <TabsContent value="informacni-souhlas" className="space-y-6">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="glass-card rounded-2xl p-8"
+              >
+                <h1 className="text-2xl font-display font-semibold text-primary mb-6">
+                  Upravit Informační souhlas
+                </h1>
+
+                <div className="space-y-6">
+                  <div className="space-y-2">
+                    <Label className="text-foreground">Úvodní text</Label>
+                    <Textarea
+                      value={informacniSouhlas.intro}
+                      onChange={(e) => setInformacniSouhlas(prev => ({ ...prev, intro: e.target.value }))}
+                      className="bg-white/50 border-primary/20 focus:border-primary min-h-[100px]"
+                      placeholder="Úvodní text dokumentu..."
+                    />
+                  </div>
+
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <Label className="text-foreground text-lg">Sekce</Label>
+                      <Button
+                        type="button"
+                        onClick={addSection}
+                        variant="outline"
+                        size="sm"
+                        className="gap-2"
+                      >
+                        <Plus className="w-4 h-4" />
+                        Přidat sekci
+                      </Button>
+                    </div>
+
+                    {informacniSouhlas.sections.map((section, index) => (
+                      <div key={index} className="bg-white/30 rounded-lg p-4 space-y-3">
+                        <div className="flex items-center justify-between">
+                          <Label className="text-foreground font-medium">Sekce {index + 1}</Label>
+                          <Button
+                            type="button"
+                            onClick={() => removeSection(index)}
+                            variant="ghost"
+                            size="icon"
+                            className="text-destructive hover:bg-destructive/10"
+                          >
+                            <X className="w-4 h-4" />
+                          </Button>
+                        </div>
+                        
+                        <Input
+                          value={section.title}
+                          onChange={(e) => updateSection(index, "title", e.target.value)}
+                          placeholder="Název sekce"
+                          className="bg-white/50 border-primary/20 focus:border-primary"
+                        />
+                        
+                        <Textarea
+                          value={section.text || ""}
+                          onChange={(e) => updateSection(index, "text", e.target.value)}
+                          placeholder="Text sekce..."
+                          className="bg-white/50 border-primary/20 focus:border-primary min-h-[80px]"
+                        />
+
+                        <div className="space-y-2">
+                          <Label className="text-sm text-muted-foreground">
+                            Odrážky (každá na novém řádku, volitelné)
+                          </Label>
+                          <Textarea
+                            value={section.items?.join("\n") || ""}
+                            onChange={(e) => updateSection(index, "items", e.target.value.split("\n").filter(Boolean))}
+                            placeholder="Položka 1&#10;Položka 2&#10;Položka 3"
+                            className="bg-white/50 border-primary/20 focus:border-primary min-h-[80px]"
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <Button
+                    onClick={handleSaveInformacniSouhlas}
+                    disabled={savingContent}
+                    className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground"
+                  >
+                    <Save className="w-4 h-4" />
+                    {savingContent ? "Ukládání..." : "Uložit změny"}
+                  </Button>
+                </div>
+              </motion.div>
+            </TabsContent>
+
+            <TabsContent value="kontakt" className="space-y-6">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="glass-card rounded-2xl p-8"
+              >
+                <h1 className="text-2xl font-display font-semibold text-primary mb-6">
+                  Upravit Kontakt
+                </h1>
+
+                <div className="space-y-5">
+                  <div className="space-y-2">
+                    <Label className="text-foreground">Úvodní text</Label>
+                    <Textarea
+                      value={kontakt.intro}
+                      onChange={(e) => setKontakt(prev => ({ ...prev, intro: e.target.value }))}
+                      className="bg-white/50 border-primary/20 focus:border-primary min-h-[80px]"
+                    />
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label className="text-foreground">Jméno</Label>
+                      <Input
+                        value={kontakt.name}
+                        onChange={(e) => setKontakt(prev => ({ ...prev, name: e.target.value }))}
+                        className="bg-white/50 border-primary/20 focus:border-primary"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label className="text-foreground">E-mail</Label>
+                      <Input
+                        type="email"
+                        value={kontakt.email}
+                        onChange={(e) => setKontakt(prev => ({ ...prev, email: e.target.value }))}
+                        className="bg-white/50 border-primary/20 focus:border-primary"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label className="text-foreground">Adresa</Label>
+                      <Input
+                        value={kontakt.address}
+                        onChange={(e) => setKontakt(prev => ({ ...prev, address: e.target.value }))}
+                        className="bg-white/50 border-primary/20 focus:border-primary"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label className="text-foreground">Telefon (volitelné)</Label>
+                      <Input
+                        type="tel"
+                        value={kontakt.phone}
+                        onChange={(e) => setKontakt(prev => ({ ...prev, phone: e.target.value }))}
+                        placeholder="+420 123 456 789"
+                        className="bg-white/50 border-primary/20 focus:border-primary"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label className="text-foreground">Fotografie</Label>
+                    <div className="flex items-center gap-4">
+                      {(kontakt.photo_url || contactPhotoFile) && (
+                        <img
+                          src={contactPhotoFile ? URL.createObjectURL(contactPhotoFile) : kontakt.photo_url}
+                          alt="Náhled"
+                          className="w-20 h-20 object-cover rounded-lg"
+                        />
+                      )}
+                      <Input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => setContactPhotoFile(e.target.files?.[0] || null)}
+                        className="bg-white/50 border-primary/20 focus:border-primary flex-1"
+                      />
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      Pokud nevyberete novou fotku, zůstane původní.
+                    </p>
+                  </div>
+
+                  <Button
+                    onClick={handleSaveKontakt}
+                    disabled={savingContent}
+                    className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground"
+                  >
+                    <Save className="w-4 h-4" />
+                    {savingContent ? "Ukládání..." : "Uložit změny"}
+                  </Button>
+                </div>
               </motion.div>
             </TabsContent>
 
