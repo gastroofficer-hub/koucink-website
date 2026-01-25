@@ -9,9 +9,19 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import backgroundImage from "@/assets/background.jpg";
 
+interface CoachingStep {
+  title: string;
+  text: string;
+  tags?: string[];
+}
+
 interface OMneContent {
   kdoJsem: string;
   procSeMnou: string;
+}
+
+interface JakProbihaContent {
+  steps: CoachingStep[];
 }
 
 const navigationItems = [
@@ -28,25 +38,60 @@ Moje hodnoty jsou jasné: říkám věci tak, jak jsou, bez zbytečných frází
   procSeMnou: `Vzděláním jsem Bc. v oboru bezpečnostně právních činností ve veřejné správě a Mgr. v sociálních studiích. Několik let se věnuji také podpoře kolegů v náročných životních i pracovních situacích. Můj koučovací styl je kombinací účinných nástrojů, zkušeností z praxe a citlivého přístupu k jedinečnosti každého člověka. Klienti ke mně přicházejí z různých prostředí – ať už řeší osobní téma, vztah, práci, stres nebo hledání směru. Vždy pracujeme tak, aby výsledek byl jasný, lidský a skutečný.`
 };
 
+const defaultJakProbiha: JakProbihaContent = {
+  steps: [
+    {
+      title: "Kontakt & objednávka",
+      text: "Napiš mi email nebo vyplň formulář na webu. Popiš, s čím potřebuješ pomoct (stres, kariéra, vztahy...). Zaručeně odpovídám do 24 hodin s návrhem volných termínů."
+    },
+    {
+      title: "Předchozí volný rozhovor",
+      text: "15 minutová zdarma telefonická volba. Zjistíme, jestli si sedíme, probereme tvé cíle a domluvíme první sezení."
+    },
+    {
+      title: "Sjednání termínu & platba",
+      text: "Vybereme si první sezení (online/osobně). Pošlu ti fakturu a informační souhlas k podpisu. Zaplatíš zálohu a podepíšeš."
+    },
+    {
+      title: "Příprava na sezení",
+      text: "Pošlu ti krátký přehled: co očekávat, jak se připravit (co si přinést, na co se zamyslet). Dostaneš i link na Zoom (online) nebo adresu (osobní schůzka)."
+    },
+    {
+      title: "První sezení",
+      text: "60 minut intenzivní práce. Zaměříme se na tvůj hlavní cíl, najdeme první akční kroky. Po sezení dostaneš shrnutí + \"domácí úkol\".",
+      tags: ["Online: Zoom, Skype", "Osobně: Lanškroun", "Délka: 60 minut", "Frekvence: 1–2× měsíčně"]
+    }
+  ]
+};
+
 const Index = () => {
   const [oMne, setOMne] = useState<OMneContent>(defaultOMne);
+  const [jakProbiha, setJakProbiha] = useState<JakProbihaContent>(defaultJakProbiha);
 
   useEffect(() => {
-    const fetchOMne = async () => {
+    const fetchContent = async () => {
       const { data } = await supabase
         .from("site_content")
-        .select("content")
-        .eq("key", "o_mne")
-        .maybeSingle();
+        .select("key, content")
+        .in("key", ["o_mne", "jak_probiha"]);
 
-      if (data?.content) {
-        const content = data.content as unknown as OMneContent;
-        if (content.kdoJsem || content.procSeMnou) {
-          setOMne(content);
-        }
+      if (data) {
+        data.forEach((item) => {
+          if (item.key === "o_mne") {
+            const content = item.content as unknown as OMneContent;
+            if (content.kdoJsem || content.procSeMnou) {
+              setOMne(content);
+            }
+          } else if (item.key === "jak_probiha") {
+            const content = item.content as unknown as JakProbihaContent;
+            if (content.steps && content.steps.length > 0) {
+              setJakProbiha(content);
+            }
+          }
+        });
       }
     };
-    fetchOMne();
+    fetchContent();
   }, []);
 
   return (
@@ -181,36 +226,9 @@ const Index = () => {
                 Jak probíhá koučink
               </h3>
               <div className="space-y-6 text-foreground/90 leading-relaxed">
-                {[
-                  {
-                    num: 1,
-                    title: "Kontakt & objednávka",
-                    text: "Napiš mi email nebo vyplň formulář na webu. Popiš, s čím potřebuješ pomoct (stres, kariéra, vztahy...). Zaručeně odpovídám do 24 hodin s návrhem volných termínů."
-                  },
-                  {
-                    num: 2,
-                    title: "Předchozí volný rozhovor",
-                    text: "15 minutová zdarma telefonická volba. Zjistíme, jestli si sedíme, probereme tvé cíle a domluvíme první sezení."
-                  },
-                  {
-                    num: 3,
-                    title: "Sjednání termínu & platba",
-                    text: "Vybereme si první sezení (online/osobně). Pošlu ti fakturu a informační souhlas k podpisu. Zaplatíš zálohu a podepíšeš."
-                  },
-                  {
-                    num: 4,
-                    title: "Příprava na sezení",
-                    text: "Pošlu ti krátký přehled: co očekávat, jak se připravit (co si přinést, na co se zamyslet). Dostaneš i link na Zoom (online) nebo adresu (osobní schůzka)."
-                  },
-                  {
-                    num: 5,
-                    title: "První sezení",
-                    text: "60 minut intenzivní práce. Zaměříme se na tvůj hlavní cíl, najdeme první akční kroky. Po sezení dostaneš shrnutí + \"domácí úkol\".",
-                    tags: ["Online: Zoom, Skype", "Osobně: Lanškroun", "Délka: 60 minut", "Frekvence: 1–2× měsíčně"]
-                  }
-                ].map((step, index) => (
+                {jakProbiha.steps.map((step, index) => (
                   <motion.div
-                    key={step.num}
+                    key={index}
                     className="flex gap-4"
                     initial={{ opacity: 0, x: -30 }}
                     whileInView={{ opacity: 1, x: 0 }}
@@ -224,7 +242,7 @@ const Index = () => {
                       viewport={{ once: true }}
                       transition={{ duration: 0.3, delay: index * 0.1 + 0.2 }}
                     >
-                      {step.num}
+                      {index + 1}
                     </motion.div>
                     <div>
                       <h4 className="font-semibold text-primary mb-1">{step.title}</h4>

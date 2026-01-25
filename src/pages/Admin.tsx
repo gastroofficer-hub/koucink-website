@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { Upload, Trash2, LogOut, ArrowLeft, UserPlus, Users, Shield, FileText, Phone, Plus, X, Save, User, History, Clock } from "lucide-react";
+import { Upload, Trash2, LogOut, ArrowLeft, UserPlus, Users, Shield, FileText, Phone, Plus, X, Save, User, History, Clock, ListOrdered } from "lucide-react";
 import { motion } from "framer-motion";
 import backgroundImage from "@/assets/background.jpg";
 import { Link } from "react-router-dom";
@@ -52,6 +52,16 @@ interface OMneContent {
   procSeMnou: string;
 }
 
+interface CoachingStep {
+  title: string;
+  text: string;
+  tags?: string[];
+}
+
+interface JakProbihaContent {
+  steps: CoachingStep[];
+}
+
 interface ChangeHistoryItem {
   id: string;
   user_email: string;
@@ -94,7 +104,16 @@ const Admin = () => {
   const [contactPhotoFile, setContactPhotoFile] = useState<File | null>(null);
   const [changeHistory, setChangeHistory] = useState<ChangeHistoryItem[]>([]);
   const [loadingHistory, setLoadingHistory] = useState(false);
-  
+  const [jakProbiha, setJakProbiha] = useState<JakProbihaContent>({
+    steps: [
+      { title: "Kontakt & objednávka", text: "Napiš mi email nebo vyplň formulář na webu. Popiš, s čím potřebuješ pomoct (stres, kariéra, vztahy...). Zaručeně odpovídám do 24 hodin s návrhem volných termínů." },
+      { title: "Předchozí volný rozhovor", text: "15 minutová zdarma telefonická volba. Zjistíme, jestli si sedíme, probereme tvé cíle a domluvíme první sezení." },
+      { title: "Sjednání termínu & platba", text: "Vybereme si první sezení (online/osobně). Pošlu ti fakturu a informační souhlas k podpisu. Zaplatíš zálohu a podepíšeš." },
+      { title: "Příprava na sezení", text: "Pošlu ti krátký přehled: co očekávat, jak se připravit (co si přinést, na co se zamyslet). Dostaneš i link na Zoom (online) nebo adresu (osobní schůzka)." },
+      { title: "První sezení", text: "60 minut intenzivní práce. Zaměříme se na tvůj hlavní cíl, najdeme první akční kroky. Po sezení dostaneš shrnutí + \"domácí úkol\".", tags: ["Online: Zoom, Skype", "Osobně: Lanškroun", "Délka: 60 minut", "Frekvence: 1–2× měsíčně"] }
+    ]
+  });
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -176,6 +195,11 @@ const Admin = () => {
           setKontakt(item.content as KontaktContent);
         } else if (item.key === "o_mne") {
           setOMne(item.content as OMneContent);
+        } else if (item.key === "jak_probiha") {
+          const content = item.content as JakProbihaContent;
+          if (content.steps && content.steps.length > 0) {
+            setJakProbiha(content);
+          }
         }
       });
     }
@@ -457,6 +481,69 @@ const Admin = () => {
     }
   };
 
+  const handleSaveJakProbiha = async () => {
+    setSavingContent(true);
+    try {
+      const { data: existingData } = await supabase
+        .from("site_content")
+        .select("id")
+        .eq("key", "jak_probiha")
+        .maybeSingle();
+
+      if (existingData) {
+        const { error } = await supabase
+          .from("site_content")
+          .update({ 
+            content: JSON.parse(JSON.stringify(jakProbiha)), 
+            updated_at: new Date().toISOString() 
+          })
+          .eq("key", "jak_probiha");
+
+        if (error) throw error;
+      } else {
+        const { error } = await supabase
+          .from("site_content")
+          .insert({ 
+            key: "jak_probiha",
+            content: JSON.parse(JSON.stringify(jakProbiha))
+          });
+
+        if (error) throw error;
+      }
+      
+      await logChange("Jak probíhá koučink", "Aktualizace", { stepsCount: jakProbiha.steps.length });
+      toast.success("Sekce 'Jak probíhá koučink' byla uložena!");
+    } catch (error: unknown) {
+      const err = error as Error;
+      toast.error("Chyba při ukládání: " + err.message);
+    } finally {
+      setSavingContent(false);
+    }
+  };
+
+  const addCoachingStep = () => {
+    setJakProbiha(prev => ({
+      ...prev,
+      steps: [...prev.steps, { title: "", text: "" }]
+    }));
+  };
+
+  const removeCoachingStep = (index: number) => {
+    setJakProbiha(prev => ({
+      ...prev,
+      steps: prev.steps.filter((_, i) => i !== index)
+    }));
+  };
+
+  const updateCoachingStep = (index: number, field: keyof CoachingStep, value: string | string[]) => {
+    setJakProbiha(prev => ({
+      ...prev,
+      steps: prev.steps.map((step, i) => 
+        i === index ? { ...step, [field]: value } : step
+      )
+    }));
+  };
+
   const addSection = () => {
     setInformacniSouhlas(prev => ({
       ...prev,
@@ -566,6 +653,10 @@ const Admin = () => {
               <TabsTrigger value="o-mne" className="gap-2">
                 <User className="w-4 h-4" />
                 O mně
+              </TabsTrigger>
+              <TabsTrigger value="jak-probiha" className="gap-2">
+                <ListOrdered className="w-4 h-4" />
+                Jak probíhá
               </TabsTrigger>
               <TabsTrigger value="admins" className="gap-2">
                 <Users className="w-4 h-4" />
@@ -904,6 +995,99 @@ const Admin = () => {
 
                   <Button
                     onClick={handleSaveOMne}
+                    disabled={savingContent}
+                    className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground"
+                  >
+                    <Save className="w-4 h-4" />
+                    {savingContent ? "Ukládání..." : "Uložit změny"}
+                  </Button>
+                </div>
+              </motion.div>
+            </TabsContent>
+
+            <TabsContent value="jak-probiha" className="space-y-6">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="glass-card rounded-2xl p-8"
+              >
+                <h1 className="text-2xl font-display font-semibold text-primary mb-6">
+                  Upravit sekci "Jak probíhá koučink"
+                </h1>
+
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <Label className="text-foreground text-lg">Kroky procesu</Label>
+                    <Button
+                      type="button"
+                      onClick={addCoachingStep}
+                      variant="outline"
+                      size="sm"
+                      className="gap-2"
+                    >
+                      <Plus className="w-4 h-4" />
+                      Přidat krok
+                    </Button>
+                  </div>
+
+                  {jakProbiha.steps.map((step, index) => (
+                    <div key={index} className="bg-white/30 rounded-lg p-4 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <Label className="text-foreground font-medium flex items-center gap-2">
+                          <span className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center text-primary text-sm font-semibold">
+                            {index + 1}
+                          </span>
+                          Krok {index + 1}
+                        </Label>
+                        <Button
+                          type="button"
+                          onClick={() => removeCoachingStep(index)}
+                          variant="ghost"
+                          size="icon"
+                          className="text-destructive hover:bg-destructive/10"
+                          disabled={jakProbiha.steps.length <= 1}
+                        >
+                          <X className="w-4 h-4" />
+                        </Button>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <Label className="text-sm text-muted-foreground">Název kroku</Label>
+                        <Input
+                          value={step.title}
+                          onChange={(e) => updateCoachingStep(index, "title", e.target.value)}
+                          placeholder="Název kroku"
+                          className="bg-white/50 border-primary/20 focus:border-primary"
+                        />
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <Label className="text-sm text-muted-foreground">Popis kroku</Label>
+                        <Textarea
+                          value={step.text}
+                          onChange={(e) => updateCoachingStep(index, "text", e.target.value)}
+                          placeholder="Popis kroku..."
+                          className="bg-white/50 border-primary/20 focus:border-primary min-h-[80px]"
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label className="text-sm text-muted-foreground">
+                          Štítky (každý na novém řádku, volitelné)
+                        </Label>
+                        <Textarea
+                          value={step.tags?.join("\n") || ""}
+                          onChange={(e) => updateCoachingStep(index, "tags", e.target.value.split("\n").filter(Boolean))}
+                          placeholder="Online: Zoom, Skype&#10;Osobně: Lanškroun&#10;Délka: 60 minut"
+                          className="bg-white/50 border-primary/20 focus:border-primary min-h-[80px]"
+                        />
+                      </div>
+                    </div>
+                  ))}
+
+                  <Button
+                    onClick={handleSaveJakProbiha}
                     disabled={savingContent}
                     className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground"
                   >
