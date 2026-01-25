@@ -1,14 +1,15 @@
 import { motion } from "framer-motion";
-import { CheckCircle, ClipboardList, Mail, Award, ChevronDown } from "lucide-react";
+import { CheckCircle, CalendarCheck, Mail, Award, ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
 import NavigationCard from "@/components/NavigationCard";
 import Footer from "@/components/Footer";
 import FallingLeaves from "@/components/FallingLeaves";
+import { Button } from "@/components/ui/button";
 import backgroundImage from "@/assets/background.jpg";
 
 const navigationItems = [
   { icon: CheckCircle, title: "Informační souhlas", to: "/informovany-souhlas" },
-  { icon: ClipboardList, title: "Dotazník", to: "/dotaznik" },
+  { icon: CalendarCheck, title: "Rezervace", to: "/dotaznik" },
   { icon: Award, title: "Diplomy", to: "/diplomy" },
   { icon: Mail, title: "Kontakt", to: "/kontakt" },
 ];
@@ -81,6 +82,26 @@ const Index = () => {
             </motion.div>
           </motion.div>
         </div>
+      </div>
+
+      {/* Rezervuj termín Button */}
+      <div className="flex justify-center px-6 py-12 md:py-16">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.6 }}
+        >
+          <Link to="/dotaznik">
+            <Button 
+              size="lg" 
+              className="bg-primary hover:bg-primary/90 text-primary-foreground px-10 py-6 text-lg font-display font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+            >
+              <CalendarCheck className="w-5 h-5 mr-2" />
+              Rezervuj termín
+            </Button>
+          </Link>
+        </motion.div>
       </div>
 
       {/* O mně Section - appears on scroll */}
