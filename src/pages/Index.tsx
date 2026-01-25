@@ -181,51 +181,64 @@ const Index = () => {
                 Jak probíhá koučink
               </h3>
               <div className="space-y-6 text-foreground/90 leading-relaxed">
-                <div className="flex gap-4">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-semibold">1</div>
-                  <div>
-                    <h4 className="font-semibold text-primary mb-1">Kontakt & objednávka</h4>
-                    <p>Napiš mi email nebo vyplň formulář na webu. Popiš, s čím potřebuješ pomoct (stres, kariéra, vztahy...). Zaručeně odpovídám do 24 hodin s návrhem volných termínů.</p>
-                  </div>
-                </div>
-
-                <div className="flex gap-4">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-semibold">2</div>
-                  <div>
-                    <h4 className="font-semibold text-primary mb-1">Předchozí volný rozhovor</h4>
-                    <p>15 minutová zdarma telefonická volba. Zjistíme, jestli si sedíme, probereme tvé cíle a domluvíme první sezení.</p>
-                  </div>
-                </div>
-
-                <div className="flex gap-4">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-semibold">3</div>
-                  <div>
-                    <h4 className="font-semibold text-primary mb-1">Sjednání termínu & platba</h4>
-                    <p>Vybereme si první sezení (online/osobně). Pošlu ti fakturu a informační souhlas k podpisu. Zaplatíš zálohu a podepíšeš.</p>
-                  </div>
-                </div>
-
-                <div className="flex gap-4">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-semibold">4</div>
-                  <div>
-                    <h4 className="font-semibold text-primary mb-1">Příprava na sezení</h4>
-                    <p>Pošlu ti krátký přehled: co očekávat, jak se připravit (co si přinést, na co se zamyslet). Dostaneš i link na Zoom (online) nebo adresu (osobní schůzka).</p>
-                  </div>
-                </div>
-
-                <div className="flex gap-4">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-semibold">5</div>
-                  <div>
-                    <h4 className="font-semibold text-primary mb-1">První sezení</h4>
-                    <p>60 minut intenzivní práce. Zaměříme se na tvůj hlavní cíl, najdeme první akční kroky. Po sezení dostaneš shrnutí + "domácí úkol".</p>
-                    <div className="mt-3 flex flex-wrap gap-3 text-sm">
-                      <span className="px-3 py-1 bg-primary/10 rounded-full">Online: Zoom, Skype</span>
-                      <span className="px-3 py-1 bg-primary/10 rounded-full">Osobně: Lanškroun</span>
-                      <span className="px-3 py-1 bg-primary/10 rounded-full">Délka: 60 minut</span>
-                      <span className="px-3 py-1 bg-primary/10 rounded-full">Frekvence: 1–2× měsíčně</span>
+                {[
+                  {
+                    num: 1,
+                    title: "Kontakt & objednávka",
+                    text: "Napiš mi email nebo vyplň formulář na webu. Popiš, s čím potřebuješ pomoct (stres, kariéra, vztahy...). Zaručeně odpovídám do 24 hodin s návrhem volných termínů."
+                  },
+                  {
+                    num: 2,
+                    title: "Předchozí volný rozhovor",
+                    text: "15 minutová zdarma telefonická volba. Zjistíme, jestli si sedíme, probereme tvé cíle a domluvíme první sezení."
+                  },
+                  {
+                    num: 3,
+                    title: "Sjednání termínu & platba",
+                    text: "Vybereme si první sezení (online/osobně). Pošlu ti fakturu a informační souhlas k podpisu. Zaplatíš zálohu a podepíšeš."
+                  },
+                  {
+                    num: 4,
+                    title: "Příprava na sezení",
+                    text: "Pošlu ti krátký přehled: co očekávat, jak se připravit (co si přinést, na co se zamyslet). Dostaneš i link na Zoom (online) nebo adresu (osobní schůzka)."
+                  },
+                  {
+                    num: 5,
+                    title: "První sezení",
+                    text: "60 minut intenzivní práce. Zaměříme se na tvůj hlavní cíl, najdeme první akční kroky. Po sezení dostaneš shrnutí + \"domácí úkol\".",
+                    tags: ["Online: Zoom, Skype", "Osobně: Lanškroun", "Délka: 60 minut", "Frekvence: 1–2× měsíčně"]
+                  }
+                ].map((step, index) => (
+                  <motion.div
+                    key={step.num}
+                    className="flex gap-4"
+                    initial={{ opacity: 0, x: -30 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, amount: 0.5 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                  >
+                    <motion.div 
+                      className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-semibold"
+                      initial={{ scale: 0 }}
+                      whileInView={{ scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.3, delay: index * 0.1 + 0.2 }}
+                    >
+                      {step.num}
+                    </motion.div>
+                    <div>
+                      <h4 className="font-semibold text-primary mb-1">{step.title}</h4>
+                      <p>{step.text}</p>
+                      {step.tags && (
+                        <div className="mt-3 flex flex-wrap gap-3 text-sm">
+                          {step.tags.map((tag) => (
+                            <span key={tag} className="px-3 py-1 bg-primary/10 rounded-full">{tag}</span>
+                          ))}
+                        </div>
+                      )}
                     </div>
-                  </div>
-                </div>
+                  </motion.div>
+                ))}
               </div>
             </div>
           </div>

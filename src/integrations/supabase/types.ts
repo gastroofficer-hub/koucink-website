@@ -35,6 +35,33 @@ export type Database = {
         }
         Relationships: []
       }
+      change_history: {
+        Row: {
+          action: string
+          created_at: string
+          details: Json | null
+          id: string
+          section: string
+          user_email: string
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          details?: Json | null
+          id?: string
+          section: string
+          user_email: string
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          details?: Json | null
+          id?: string
+          section?: string
+          user_email?: string
+        }
+        Relationships: []
+      }
       diplomas: {
         Row: {
           created_at: string

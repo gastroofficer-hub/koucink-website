@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { Upload, Trash2, LogOut, ArrowLeft, UserPlus, Users, Shield, FileText, Phone, Plus, X, Save, User } from "lucide-react";
+import { Upload, Trash2, LogOut, ArrowLeft, UserPlus, Users, Shield, FileText, Phone, Plus, X, Save, User, History, Clock } from "lucide-react";
 import { motion } from "framer-motion";
 import backgroundImage from "@/assets/background.jpg";
 import { Link } from "react-router-dom";
@@ -52,6 +52,15 @@ interface OMneContent {
   procSeMnou: string;
 }
 
+interface ChangeHistoryItem {
+  id: string;
+  user_email: string;
+  section: string;
+  action: string;
+  details: unknown;
+  created_at: string;
+}
+
 const Admin = () => {
   const [diplomas, setDiplomas] = useState<Diploma[]>([]);
   const [admins, setAdmins] = useState<AdminUser[]>([]);
@@ -83,6 +92,8 @@ const Admin = () => {
   });
   const [savingContent, setSavingContent] = useState(false);
   const [contactPhotoFile, setContactPhotoFile] = useState<File | null>(null);
+  const [changeHistory, setChangeHistory] = useState<ChangeHistoryItem[]>([]);
+  const [loadingHistory, setLoadingHistory] = useState(false);
   
   const navigate = useNavigate();
 
@@ -119,10 +130,37 @@ const Admin = () => {
       fetchDiplomas();
       fetchAdmins();
       fetchSiteContent();
+      fetchChangeHistory();
     } else {
       setIsAdmin(false);
       setLoading(false);
     }
+  };
+
+  const fetchChangeHistory = async () => {
+    setLoadingHistory(true);
+    const { data, error } = await supabase
+      .from("change_history")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(50);
+
+    if (error) {
+      console.error("Error fetching change history:", error);
+    } else {
+      setChangeHistory(data || []);
+    }
+    setLoadingHistory(false);
+  };
+
+  const logChange = async (section: string, action: string, details?: Record<string, unknown>) => {
+    await supabase.from("change_history").insert([{
+      user_email: currentUserEmail,
+      section,
+      action,
+      details: details ? JSON.parse(JSON.stringify(details)) : null
+    }]);
+    fetchChangeHistory();
   };
 
   const fetchSiteContent = async () => {
@@ -305,6 +343,7 @@ const Admin = () => {
         .eq("key", "informacni_souhlas");
 
       if (error) throw error;
+      await logChange("Informační souhlas", "Aktualizace", { sectionsCount: informacniSouhlas.sections.length });
       toast.success("Informační souhlas byl uložen!");
     } catch (error: unknown) {
       const err = error as Error;
@@ -367,6 +406,7 @@ const Admin = () => {
       
       setKontakt(prev => ({ ...prev, photo_url: photoUrl }));
       setContactPhotoFile(null);
+      await logChange("Kontakt", "Aktualizace", { name: kontakt.name, email: kontakt.email });
       toast.success("Kontakt byl uložen!");
     } catch (error: unknown) {
       const err = error as Error;
@@ -407,6 +447,7 @@ const Admin = () => {
         if (error) throw error;
       }
       
+      await logChange("O mně", "Aktualizace", { kdoJsemLength: oMne.kdoJsem.length, procSeMnouLength: oMne.procSeMnou.length });
       toast.success("Sekce 'O mně' byla uložena!");
     } catch (error: unknown) {
       const err = error as Error;
@@ -529,6 +570,10 @@ const Admin = () => {
               <TabsTrigger value="admins" className="gap-2">
                 <Users className="w-4 h-4" />
                 Správa adminů
+              </TabsTrigger>
+              <TabsTrigger value="historie" className="gap-2">
+                <History className="w-4 h-4" />
+                Historie změn
               </TabsTrigger>
             </TabsList>
 
@@ -942,6 +987,57 @@ const Admin = () => {
                         >
                           <Trash2 className="w-5 h-5" />
                         </Button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </motion.div>
+            </TabsContent>
+
+            <TabsContent value="historie" className="space-y-6">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="glass-card rounded-2xl p-8"
+              >
+                <h1 className="text-2xl font-display font-semibold text-primary mb-6">
+                  Historie změn
+                </h1>
+
+                {loadingHistory ? (
+                  <p className="text-muted-foreground">Načítání historie...</p>
+                ) : changeHistory.length === 0 ? (
+                  <p className="text-muted-foreground">Zatím nebyly zaznamenány žádné změny.</p>
+                ) : (
+                  <div className="space-y-3">
+                    {changeHistory.map((item) => (
+                      <div
+                        key={item.id}
+                        className="flex items-start gap-4 bg-white/30 rounded-lg p-4"
+                      >
+                        <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                          <Clock className="w-5 h-5 text-primary" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="font-medium text-foreground">{item.section}</span>
+                            <span className="text-sm text-muted-foreground">•</span>
+                            <span className="text-sm text-primary">{item.action}</span>
+                          </div>
+                          <p className="text-sm text-muted-foreground mt-1">
+                            {item.user_email}
+                          </p>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            {new Date(item.created_at).toLocaleString('cs-CZ', {
+                              day: 'numeric',
+                              month: 'long',
+                              year: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            })}
+                          </p>
+                        </div>
                       </div>
                     ))}
                   </div>
