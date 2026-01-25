@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { Upload, Trash2, LogOut, ArrowLeft, UserPlus, Users, Shield, FileText, Phone, Plus, X, Save } from "lucide-react";
+import { Upload, Trash2, LogOut, ArrowLeft, UserPlus, Users, Shield, FileText, Phone, Plus, X, Save, User } from "lucide-react";
 import { motion } from "framer-motion";
 import backgroundImage from "@/assets/background.jpg";
 import { Link } from "react-router-dom";
@@ -47,6 +47,11 @@ interface KontaktContent {
   photo_url: string;
 }
 
+interface OMneContent {
+  kdoJsem: string;
+  procSeMnou: string;
+}
+
 const Admin = () => {
   const [diplomas, setDiplomas] = useState<Diploma[]>([]);
   const [admins, setAdmins] = useState<AdminUser[]>([]);
@@ -71,6 +76,10 @@ const Admin = () => {
     email: "",
     phone: "",
     photo_url: ""
+  });
+  const [oMne, setOMne] = useState<OMneContent>({
+    kdoJsem: "",
+    procSeMnou: ""
   });
   const [savingContent, setSavingContent] = useState(false);
   const [contactPhotoFile, setContactPhotoFile] = useState<File | null>(null);
@@ -127,6 +136,8 @@ const Admin = () => {
           setInformacniSouhlas(item.content as InformacniSouhlasContent);
         } else if (item.key === "kontakt") {
           setKontakt(item.content as KontaktContent);
+        } else if (item.key === "o_mne") {
+          setOMne(item.content as OMneContent);
         }
       });
     }
@@ -326,19 +337,77 @@ const Admin = () => {
         photoUrl = urlData.publicUrl;
       }
 
-      const { error } = await supabase
+      // Check if kontakt exists, if not create it
+      const { data: existingData } = await supabase
         .from("site_content")
-        .update({ 
-          content: JSON.parse(JSON.stringify({ ...kontakt, photo_url: photoUrl })), 
-          updated_at: new Date().toISOString() 
-        })
-        .eq("key", "kontakt");
+        .select("id")
+        .eq("key", "kontakt")
+        .maybeSingle();
 
-      if (error) throw error;
+      if (existingData) {
+        const { error } = await supabase
+          .from("site_content")
+          .update({ 
+            content: JSON.parse(JSON.stringify({ ...kontakt, photo_url: photoUrl })), 
+            updated_at: new Date().toISOString() 
+          })
+          .eq("key", "kontakt");
+
+        if (error) throw error;
+      } else {
+        const { error } = await supabase
+          .from("site_content")
+          .insert({ 
+            key: "kontakt",
+            content: JSON.parse(JSON.stringify({ ...kontakt, photo_url: photoUrl }))
+          });
+
+        if (error) throw error;
+      }
       
       setKontakt(prev => ({ ...prev, photo_url: photoUrl }));
       setContactPhotoFile(null);
       toast.success("Kontakt byl uložen!");
+    } catch (error: unknown) {
+      const err = error as Error;
+      toast.error("Chyba při ukládání: " + err.message);
+    } finally {
+      setSavingContent(false);
+    }
+  };
+
+  const handleSaveOMne = async () => {
+    setSavingContent(true);
+    try {
+      // Check if o_mne exists, if not create it
+      const { data: existingData } = await supabase
+        .from("site_content")
+        .select("id")
+        .eq("key", "o_mne")
+        .maybeSingle();
+
+      if (existingData) {
+        const { error } = await supabase
+          .from("site_content")
+          .update({ 
+            content: JSON.parse(JSON.stringify(oMne)), 
+            updated_at: new Date().toISOString() 
+          })
+          .eq("key", "o_mne");
+
+        if (error) throw error;
+      } else {
+        const { error } = await supabase
+          .from("site_content")
+          .insert({ 
+            key: "o_mne",
+            content: JSON.parse(JSON.stringify(oMne))
+          });
+
+        if (error) throw error;
+      }
+      
+      toast.success("Sekce 'O mně' byla uložena!");
     } catch (error: unknown) {
       const err = error as Error;
       toast.error("Chyba při ukládání: " + err.message);
@@ -452,6 +521,10 @@ const Admin = () => {
               <TabsTrigger value="kontakt" className="gap-2">
                 <Phone className="w-4 h-4" />
                 Kontakt
+              </TabsTrigger>
+              <TabsTrigger value="o-mne" className="gap-2">
+                <User className="w-4 h-4" />
+                O mně
               </TabsTrigger>
               <TabsTrigger value="admins" className="gap-2">
                 <Users className="w-4 h-4" />
@@ -742,6 +815,50 @@ const Admin = () => {
 
                   <Button
                     onClick={handleSaveKontakt}
+                    disabled={savingContent}
+                    className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground"
+                  >
+                    <Save className="w-4 h-4" />
+                    {savingContent ? "Ukládání..." : "Uložit změny"}
+                  </Button>
+                </div>
+              </motion.div>
+            </TabsContent>
+
+            <TabsContent value="o-mne" className="space-y-6">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="glass-card rounded-2xl p-8"
+              >
+                <h1 className="text-2xl font-display font-semibold text-primary mb-6">
+                  Upravit sekci "O mně"
+                </h1>
+
+                <div className="space-y-6">
+                  <div className="space-y-2">
+                    <Label className="text-foreground font-medium">Kdo jsem?</Label>
+                    <Textarea
+                      value={oMne.kdoJsem}
+                      onChange={(e) => setOMne(prev => ({ ...prev, kdoJsem: e.target.value }))}
+                      className="bg-white/50 border-primary/20 focus:border-primary min-h-[200px]"
+                      placeholder="Text pro sekci 'Kdo jsem?'..."
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label className="text-foreground font-medium">Proč se mnou?</Label>
+                    <Textarea
+                      value={oMne.procSeMnou}
+                      onChange={(e) => setOMne(prev => ({ ...prev, procSeMnou: e.target.value }))}
+                      className="bg-white/50 border-primary/20 focus:border-primary min-h-[200px]"
+                      placeholder="Text pro sekci 'Proč se mnou?'..."
+                    />
+                  </div>
+
+                  <Button
+                    onClick={handleSaveOMne}
                     disabled={savingContent}
                     className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground"
                   >

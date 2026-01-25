@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { CheckCircle, CalendarCheck, Mail, Award, ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -5,7 +6,13 @@ import NavigationCard from "@/components/NavigationCard";
 import Footer from "@/components/Footer";
 import FallingLeaves from "@/components/FallingLeaves";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
 import backgroundImage from "@/assets/background.jpg";
+
+interface OMneContent {
+  kdoJsem: string;
+  procSeMnou: string;
+}
 
 const navigationItems = [
   { icon: CheckCircle, title: "Informační souhlas", to: "/informovany-souhlas" },
@@ -14,7 +21,34 @@ const navigationItems = [
   { icon: Mail, title: "Kontakt", to: "/kontakt" },
 ];
 
+const defaultOMne: OMneContent = {
+  kdoJsem: `Jsem kouč, který pracuje s člověkem tak, aby v sobě objevil to, co je v něm skryté a dlouho nevyužité. Můj přístup stojí na lidskosti, autenticitě a schopnosti udržet klid i v náročných situacích. Více než dvacet let služby u Policie ČR a vedení týmu přes dvacet lidí mi dalo zkušenosti s tlakem, odpovědností a prostředím, které se neustále mění. Tyto zkušenosti dnes přenáším do své práce s lidmi – jednoduše, srozumitelně a tak, aby vše, co spolu objevíme, bylo použitelné v běžném životě.
+
+Moje hodnoty jsou jasné: říkám věci tak, jak jsou, bez zbytečných frází; ke každému přistupuji jako k člověku se svým příběhem; a v situacích, které jsou vypjaté, jsem tím, kdo drží klid a nadhled. Posláním mé práce je pomoci lidem najít a využít jejich vlastní sílu a schopnosti – to, co v nich je, ale někdy zůstává ukryto pod stresem, povinnostmi nebo životní zátěží.`,
+  procSeMnou: `Vzděláním jsem Bc. v oboru bezpečnostně právních činností ve veřejné správě a Mgr. v sociálních studiích. Několik let se věnuji také podpoře kolegů v náročných životních i pracovních situacích. Můj koučovací styl je kombinací účinných nástrojů, zkušeností z praxe a citlivého přístupu k jedinečnosti každého člověka. Klienti ke mně přicházejí z různých prostředí – ať už řeší osobní téma, vztah, práci, stres nebo hledání směru. Vždy pracujeme tak, aby výsledek byl jasný, lidský a skutečný.`
+};
+
 const Index = () => {
+  const [oMne, setOMne] = useState<OMneContent>(defaultOMne);
+
+  useEffect(() => {
+    const fetchOMne = async () => {
+      const { data } = await supabase
+        .from("site_content")
+        .select("content")
+        .eq("key", "o_mne")
+        .maybeSingle();
+
+      if (data?.content) {
+        const content = data.content as unknown as OMneContent;
+        if (content.kdoJsem || content.procSeMnou) {
+          setOMne(content);
+        }
+      }
+    };
+    fetchOMne();
+  }, []);
+
   return (
     <div 
       className="bg-cover bg-center bg-no-repeat bg-fixed relative"
@@ -125,21 +159,9 @@ const Index = () => {
                 Kdo jsem?
               </h3>
               <div className="space-y-4 text-foreground/90 leading-relaxed">
-                <p>
-                  Jsem kouč, který pracuje s člověkem tak, aby v sobě objevil to, co je v něm skryté 
-                  a dlouho nevyužité. Můj přístup stojí na lidskosti, autenticitě a schopnosti udržet 
-                  klid i v náročných situacích. Více než dvacet let služby u Policie ČR a vedení týmu 
-                  přes dvacet lidí mi dalo zkušenosti s tlakem, odpovědností a prostředím, které se 
-                  neustále mění. Tyto zkušenosti dnes přenáším do své práce s lidmi – jednoduše, 
-                  srozumitelně a tak, aby vše, co spolu objevíme, bylo použitelné v běžném životě.
-                </p>
-                <p>
-                  Moje hodnoty jsou jasné: říkám věci tak, jak jsou, bez zbytečných frází; ke každému 
-                  přistupuji jako k člověku se svým příběhem; a v situacích, které jsou vypjaté, jsem tím, 
-                  kdo drží klid a nadhled. Posláním mé práce je pomoci lidem najít a využít jejich vlastní 
-                  sílu a schopnosti – to, co v nich je, ale někdy zůstává ukryto pod stresem, povinnostmi 
-                  nebo životní zátěží.
-                </p>
+                {oMne.kdoJsem.split('\n\n').map((paragraph, index) => (
+                  <p key={index}>{paragraph}</p>
+                ))}
               </div>
             </div>
 
@@ -148,14 +170,9 @@ const Index = () => {
                 Proč se mnou?
               </h3>
               <div className="space-y-4 text-foreground/90 leading-relaxed">
-                <p>
-                  Vzděláním jsem Bc. v oboru bezpečnostně právních činností ve veřejné správě a Mgr. 
-                  v sociálních studiích. Několik let se věnuji také podpoře kolegů v náročných životních 
-                  i pracovních situacích. Můj koučovací styl je kombinací účinných nástrojů, zkušeností 
-                  z praxe a citlivého přístupu k jedinečnosti každého člověka. Klienti ke mně přicházejí 
-                  z různých prostředí – ať už řeší osobní téma, vztah, práci, stres nebo hledání směru. 
-                  Vždy pracujeme tak, aby výsledek byl jasný, lidský a skutečný.
-                </p>
+                {oMne.procSeMnou.split('\n\n').map((paragraph, index) => (
+                  <p key={index}>{paragraph}</p>
+                ))}
               </div>
             </div>
           </div>
