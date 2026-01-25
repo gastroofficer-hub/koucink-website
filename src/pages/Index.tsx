@@ -8,7 +8,6 @@ import FallingLeaves from "@/components/FallingLeaves";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import backgroundImage from "@/assets/background.jpg";
-import logo from "@/assets/logo.png";
 
 interface CoachingStep {
   title: string;
@@ -103,22 +102,8 @@ const Index = () => {
       <FallingLeaves />
       {/* First Screen - Hero + Navigation */}
       <div className="min-h-screen flex flex-col">
-        {/* Header with Logo */}
-        <motion.header
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="px-6 md:px-12 lg:px-20 pt-6"
-        >
-          <img 
-            src={logo} 
-            alt="Zeman - koučink" 
-            className="h-16 md:h-20 w-auto"
-          />
-        </motion.header>
-
         {/* Hero Section */}
-        <div className="flex-1 flex flex-col justify-center px-6 md:px-12 lg:px-20 pt-8">
+        <div className="flex-1 flex flex-col justify-center px-6 md:px-12 lg:px-20 pt-12">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
