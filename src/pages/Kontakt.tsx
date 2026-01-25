@@ -110,7 +110,7 @@ const Kontakt = () => {
 
         {/* Coach Photo */}
         <div className="flex justify-center">
-          <div className="w-64 h-80 md:w-72 md:h-96 rounded-2xl overflow-hidden shadow-lg">
+          <div className="w-64 h-64 md:w-72 md:h-72 rounded-full overflow-hidden shadow-lg border-4 border-primary/20">
             <img 
               src={photoUrl} 
               alt={`${displayContent.name} - Kouč`} 
