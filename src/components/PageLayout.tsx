@@ -3,6 +3,7 @@ import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ReactNode } from "react";
 import backgroundImage from "@/assets/background.jpg";
+import logo from "@/assets/logo.png";
 
 interface PageLayoutProps {
   title: string;
@@ -21,13 +22,21 @@ const PageLayout = ({ title, children }: PageLayoutProps) => {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.4 }}
+            className="flex items-center justify-between mb-8"
           >
             <Link 
               to="/" 
-              className="inline-flex items-center gap-2 text-primary hover:text-accent transition-colors mb-8 group"
+              className="inline-flex items-center gap-2 text-primary hover:text-accent transition-colors group"
             >
               <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
               <span className="font-medium">Zpět na úvod</span>
+            </Link>
+            <Link to="/">
+              <img 
+                src={logo} 
+                alt="Zeman - koučink" 
+                className="h-12 md:h-14 w-auto"
+              />
             </Link>
           </motion.div>
           
