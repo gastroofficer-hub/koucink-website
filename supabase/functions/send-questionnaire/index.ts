@@ -40,7 +40,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     const emailResponse = await resend.emails.send({
       from: "Dotazník <onboarding@resend.dev>",
-      to: ["gastro.officer@gmail.com"],
+      to: ["Zeman.o82@gmail.com"],
       subject: `Nový dotazník od ${firstName} ${lastName}`,
       html: `
         <h1>Nový dotazník</h1>
