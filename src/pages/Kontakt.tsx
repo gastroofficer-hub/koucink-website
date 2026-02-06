@@ -3,6 +3,7 @@ import PageLayout from "@/components/PageLayout";
 import { Mail, MapPin, User, Phone } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import coachPhotoDefault from "@/assets/coach-photo.jpg";
+import logo from "@/assets/logo.png";
 
 interface KontaktContent {
   intro: string;
@@ -36,7 +37,10 @@ const Kontakt = () => {
 
   if (loading) {
     return (
-      <PageLayout title="Kontakt">
+      <PageLayout 
+        title="Kontakt"
+        headerRight={<img src={logo} alt="Zeman - koučink" className="w-28 h-auto opacity-70" />}
+      >
         <p className="text-muted-foreground">Načítání...</p>
       </PageLayout>
     );
@@ -56,7 +60,10 @@ const Kontakt = () => {
   const photoUrl = displayContent.photo_url || coachPhotoDefault;
 
   return (
-    <PageLayout title="Kontakt">
+    <PageLayout 
+      title="Kontakt"
+      headerRight={<img src={logo} alt="Zeman - koučink" className="w-28 h-auto opacity-70" />}
+    >
       <div className="grid md:grid-cols-2 gap-12 items-center">
         <div className="space-y-8">
           <p className="text-lg text-foreground/90 leading-relaxed">
