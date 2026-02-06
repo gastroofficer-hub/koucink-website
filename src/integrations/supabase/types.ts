@@ -172,6 +172,39 @@ export type Database = {
         }
         Relationships: []
       }
+      testimonials: {
+        Row: {
+          author_name: string
+          author_role: string | null
+          created_at: string
+          id: string
+          is_visible: boolean
+          order_index: number
+          text: string
+          updated_at: string
+        }
+        Insert: {
+          author_name: string
+          author_role?: string | null
+          created_at?: string
+          id?: string
+          is_visible?: boolean
+          order_index?: number
+          text: string
+          updated_at?: string
+        }
+        Update: {
+          author_name?: string
+          author_role?: string | null
+          created_at?: string
+          id?: string
+          is_visible?: boolean
+          order_index?: number
+          text?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
