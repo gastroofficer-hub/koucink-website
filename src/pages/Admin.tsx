@@ -6,11 +6,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { Upload, Trash2, LogOut, ArrowLeft, UserPlus, Users, Shield, FileText, Phone, Plus, X, Save, User, History, Clock, ListOrdered } from "lucide-react";
+import { Upload, Trash2, LogOut, ArrowLeft, UserPlus, Users, Shield, FileText, Phone, Plus, X, Save, User, History, Clock, ListOrdered, BookOpen } from "lucide-react";
 import { motion } from "framer-motion";
 import backgroundImage from "@/assets/background.jpg";
 import { Link } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import BlogManagement from "@/components/admin/BlogManagement";
 
 interface Diploma {
   id: string;
@@ -658,6 +659,10 @@ const Admin = () => {
                 <ListOrdered className="w-4 h-4" />
                 Jak probíhá
               </TabsTrigger>
+              <TabsTrigger value="blog" className="gap-2">
+                <BookOpen className="w-4 h-4" />
+                Blog
+              </TabsTrigger>
               <TabsTrigger value="admins" className="gap-2">
                 <Users className="w-4 h-4" />
                 Správa adminů
@@ -667,6 +672,10 @@ const Admin = () => {
                 Historie změn
               </TabsTrigger>
             </TabsList>
+
+            <TabsContent value="blog">
+              <BlogManagement currentUserEmail={currentUserEmail} onLogChange={logChange} />
+            </TabsContent>
 
             <TabsContent value="diplomas" className="space-y-6">
               <motion.div
