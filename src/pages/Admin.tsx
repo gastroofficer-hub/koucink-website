@@ -120,20 +120,38 @@ const Admin = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        if (!session) {
-          navigate("/auth");
-        }
+    const initForSession = async (session: { user: { id: string; email?: string | null } }) => {
+      setLoading(true);
+      setCurrentUserEmail(session.user.email || "");
+
+      // If an admin row was created ahead of time (by email), pair it with this account.
+      if (session.user.email) {
+        await supabase
+          .from("admin_users")
+          .update({ user_id: session.user.id })
+          .eq("email", session.user.email);
       }
-    );
+
+      await checkAdminStatus(session.user.id);
+    };
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (!session) {
+        navigate("/auth");
+        return;
+      }
+
+      // Avoid running extra backend calls inside the auth callback directly.
+      setTimeout(() => {
+        void initForSession(session);
+      }, 0);
+    });
 
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) {
         navigate("/auth");
       } else {
-        setCurrentUserEmail(session.user.email || "");
-        checkAdminStatus(session.user.id);
+        void initForSession(session);
       }
     });
 
