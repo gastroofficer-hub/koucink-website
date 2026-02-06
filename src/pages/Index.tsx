@@ -209,80 +209,102 @@ const Index = () => {
 
       {/* O mně Section - appears on scroll */}
       <div className="min-h-screen flex items-center px-6 md:px-12 lg:px-20 py-12 md:py-20">
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.8 }}
-          className="max-w-4xl mx-auto bg-white/70 backdrop-blur-md rounded-2xl p-8 md:p-12 shadow-lg w-full"
-        >
-          <h2 className="text-3xl font-display font-semibold text-primary mb-8 text-center">
+        <div className="max-w-4xl mx-auto w-full space-y-8">
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.6 }}
+            className="text-3xl font-display font-semibold text-primary text-center"
+          >
             O mně
-          </h2>
+          </motion.h2>
           
-          <div className="space-y-12">
-            <div id="kdo-jsem" className="scroll-mt-8">
-              <h3 className="text-xl font-display font-semibold text-primary mb-4">
-                Kdo jsem?
-              </h3>
-              <div className="space-y-4 text-foreground/90 leading-relaxed">
-                {oMne.kdoJsem.split('\n\n').map((paragraph, index) => (
-                  <p key={index}>{paragraph}</p>
-                ))}
-              </div>
+          {/* Kdo jsem */}
+          <motion.div
+            id="kdo-jsem"
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.8 }}
+            className="bg-white/70 backdrop-blur-md rounded-2xl p-8 md:p-12 shadow-lg scroll-mt-8"
+          >
+            <h3 className="text-xl font-display font-semibold text-primary mb-4">
+              Kdo jsem?
+            </h3>
+            <div className="space-y-4 text-foreground/90 leading-relaxed">
+              {oMne.kdoJsem.split('\n\n').map((paragraph, index) => (
+                <p key={index}>{paragraph}</p>
+              ))}
             </div>
+          </motion.div>
 
-            <div id="proc-se-mnou" className="scroll-mt-8">
-              <h3 className="text-xl font-display font-semibold text-primary mb-4">
-                Proč se mnou?
-              </h3>
-              <div className="space-y-4 text-foreground/90 leading-relaxed">
-                {oMne.procSeMnou.split('\n\n').map((paragraph, index) => (
-                  <p key={index}>{paragraph}</p>
-                ))}
-              </div>
+          {/* Proč se mnou */}
+          <motion.div
+            id="proc-se-mnou"
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.8 }}
+            className="bg-white/70 backdrop-blur-md rounded-2xl p-8 md:p-12 shadow-lg scroll-mt-8"
+          >
+            <h3 className="text-xl font-display font-semibold text-primary mb-4">
+              Proč se mnou?
+            </h3>
+            <div className="space-y-4 text-foreground/90 leading-relaxed">
+              {oMne.procSeMnou.split('\n\n').map((paragraph, index) => (
+                <p key={index}>{paragraph}</p>
+              ))}
             </div>
+          </motion.div>
 
-            <div id="jak-probiha" className="scroll-mt-8">
-              <h3 className="text-xl font-display font-semibold text-primary mb-4">
-                Jak probíhá koučink?
-              </h3>
-              <div className="space-y-6 text-foreground/90 leading-relaxed">
-                {jakProbiha.steps.map((step, index) => (
-                  <motion.div
-                    key={index}
-                    className="flex gap-4"
-                    initial={{ opacity: 0, x: -30 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true, amount: 0.5 }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
+          {/* Jak probíhá koučink */}
+          <motion.div
+            id="jak-probiha"
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.8 }}
+            className="bg-white/70 backdrop-blur-md rounded-2xl p-8 md:p-12 shadow-lg scroll-mt-8"
+          >
+            <h3 className="text-xl font-display font-semibold text-primary mb-4">
+              Jak probíhá koučink?
+            </h3>
+            <div className="space-y-6 text-foreground/90 leading-relaxed">
+              {jakProbiha.steps.map((step, index) => (
+                <motion.div
+                  key={index}
+                  className="flex gap-4"
+                  initial={{ opacity: 0, x: -30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, amount: 0.5 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
+                  <motion.div 
+                    className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-semibold"
+                    initial={{ scale: 0 }}
+                    whileInView={{ scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.3, delay: index * 0.1 + 0.2 }}
                   >
-                    <motion.div 
-                      className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-semibold"
-                      initial={{ scale: 0 }}
-                      whileInView={{ scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.3, delay: index * 0.1 + 0.2 }}
-                    >
-                      {index + 1}
-                    </motion.div>
-                    <div>
-                      <h4 className="font-semibold text-primary mb-1">{step.title}</h4>
-                      <p>{step.text}</p>
-                      {step.tags && (
-                        <div className="mt-3 flex flex-wrap gap-3 text-sm">
-                          {step.tags.map((tag) => (
-                            <span key={tag} className="px-3 py-1 bg-primary/10 rounded-full">{tag}</span>
-                          ))}
-                        </div>
-                      )}
-                    </div>
+                    {index + 1}
                   </motion.div>
-                ))}
-              </div>
+                  <div>
+                    <h4 className="font-semibold text-primary mb-1">{step.title}</h4>
+                    <p>{step.text}</p>
+                    {step.tags && (
+                      <div className="mt-3 flex flex-wrap gap-3 text-sm">
+                        {step.tags.map((tag) => (
+                          <span key={tag} className="px-3 py-1 bg-primary/10 rounded-full">{tag}</span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </motion.div>
+              ))}
             </div>
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
       </div>
 
       {/* Footer */}
