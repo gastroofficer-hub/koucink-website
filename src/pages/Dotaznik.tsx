@@ -62,13 +62,12 @@ const Dotaznik = () => {
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="lastName" className="text-foreground font-medium">Příjmení</Label>
+            <Label htmlFor="lastName" className="text-foreground font-medium">Příjmení (volitelné)</Label>
             <Input
               id="lastName"
               value={formData.lastName}
               onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
               className="bg-white/50 border-primary/20 focus:border-primary"
-              required
             />
           </div>
         </div>
