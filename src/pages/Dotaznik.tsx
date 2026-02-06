@@ -46,8 +46,8 @@ const Dotaznik = () => {
 
   return (
     <PageLayout title="Rezervace">
-      <div className="flex gap-8">
-        <form onSubmit={handleSubmit} className="space-y-8 flex-1">
+      <div className="relative">
+        <form onSubmit={handleSubmit} className="space-y-8">
         <div className="grid md:grid-cols-2 gap-6">
           <div className="space-y-2">
             <Label htmlFor="firstName" className="text-foreground font-medium">Jméno</Label>
@@ -175,12 +175,12 @@ const Dotaznik = () => {
         </Button>
       </form>
         
-        {/* Logo na pravé straně - pouze na desktopu */}
-        <div className="hidden lg:flex items-center justify-center pl-8">
+        {/* Logo v pravém horním rohu - pouze na desktopu */}
+        <div className="hidden lg:block absolute top-0 right-0">
           <img 
             src={logo} 
             alt="Zeman - koučink" 
-            className="w-40 h-auto opacity-80"
+            className="w-32 h-auto opacity-70"
           />
         </div>
       </div>
