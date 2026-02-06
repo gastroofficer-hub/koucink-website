@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { Upload, Trash2, LogOut, ArrowLeft, UserPlus, Users, Shield, FileText, Phone, Plus, X, Save, User, History, Clock, ListOrdered, BookOpen, Coins, Scale, Quote } from "lucide-react";
+import { Upload, Trash2, LogOut, ArrowLeft, UserPlus, Users, Shield, FileText, Phone, Plus, X, Save, User, History, Clock, ListOrdered, BookOpen, Coins, Scale, Quote, HelpCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import backgroundImage from "@/assets/background.jpg";
 import { Link } from "react-router-dom";
@@ -15,6 +15,7 @@ import BlogManagement from "@/components/admin/BlogManagement";
 import CenikManagement from "@/components/admin/CenikManagement";
 import EtickyKodexManagement from "@/components/admin/EtickyKodexManagement";
 import TestimonialsManagement from "@/components/admin/TestimonialsManagement";
+import FAQManagement from "@/components/admin/FAQManagement";
 
 interface Diploma {
   id: string;
@@ -696,6 +697,10 @@ const Admin = () => {
                 <Quote className="w-4 h-4" />
                 Reference
               </TabsTrigger>
+              <TabsTrigger value="faq" className="gap-2">
+                <HelpCircle className="w-4 h-4" />
+                FAQ
+              </TabsTrigger>
               <TabsTrigger value="admins" className="gap-2">
                 <Users className="w-4 h-4" />
                 Správa adminů
@@ -720,6 +725,10 @@ const Admin = () => {
 
             <TabsContent value="reference">
               <TestimonialsManagement onLogChange={logChange} />
+            </TabsContent>
+
+            <TabsContent value="faq">
+              <FAQManagement onLogChange={logChange} />
             </TabsContent>
 
             <TabsContent value="diplomas" className="space-y-6">
