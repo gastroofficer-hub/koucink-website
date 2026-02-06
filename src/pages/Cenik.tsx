@@ -1,9 +1,67 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import backgroundImage from "@/assets/background.jpg";
 
+interface CenikItem {
+  title: string;
+  description: string;
+  price: string;
+  note?: string;
+  isFree?: boolean;
+}
+
+interface CenikContent {
+  items: CenikItem[];
+  footer: string;
+}
+
+const defaultContent: CenikContent = {
+  items: [
+    {
+      title: "Individuální koučink",
+      description: "60 minut intenzivní práce na vašem rozvoji.",
+      price: "1 500 Kč"
+    },
+    {
+      title: "Úvodní konzultace",
+      description: "15 minut telefonického rozhovoru pro vzájemné seznámení.",
+      price: "Zdarma",
+      isFree: true
+    },
+    {
+      title: "Balíček 5 sezení",
+      description: "Zvýhodněný balíček pro dlouhodobější spolupráci.",
+      price: "6 500 Kč",
+      note: "(úspora 1 000 Kč)"
+    }
+  ],
+  footer: "Ceny jsou uvedeny včetně DPH. Platba je možná převodem na účet nebo v hotovosti. Pro více informací mě neváhejte kontaktovat."
+};
+
 const Cenik = () => {
+  const [content, setContent] = useState<CenikContent>(defaultContent);
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      const { data } = await supabase
+        .from("site_content")
+        .select("content")
+        .eq("key", "cenik")
+        .maybeSingle();
+
+      if (data?.content) {
+        const loadedContent = data.content as unknown as CenikContent;
+        if (loadedContent.items && loadedContent.items.length > 0) {
+          setContent(loadedContent);
+        }
+      }
+    };
+    fetchContent();
+  }, []);
+
   return (
     <div 
       className="page-bg"
@@ -36,52 +94,39 @@ const Cenik = () => {
             </h1>
             
             <div className="space-y-6">
-              <div className="bg-white/30 rounded-xl p-6">
-                <h2 className="text-xl font-display font-semibold text-primary mb-2">
-                  Individuální koučink
-                </h2>
-                <p className="text-foreground/80 mb-4">
-                  60 minut intenzivní práce na vašem rozvoji.
-                </p>
-                <p className="text-2xl font-semibold text-primary">
-                  1 500 Kč
-                </p>
-              </div>
-
-              <div className="bg-white/30 rounded-xl p-6">
-                <h2 className="text-xl font-display font-semibold text-primary mb-2">
-                  Úvodní konzultace
-                </h2>
-                <p className="text-foreground/80 mb-4">
-                  15 minut telefonického rozhovoru pro vzájemné seznámení.
-                </p>
-                <p className="text-2xl font-semibold text-accent">
-                  Zdarma
-                </p>
-              </div>
-
-              <div className="bg-white/30 rounded-xl p-6">
-                <h2 className="text-xl font-display font-semibold text-primary mb-2">
-                  Balíček 5 sezení
-                </h2>
-                <p className="text-foreground/80 mb-4">
-                  Zvýhodněný balíček pro dlouhodobější spolupráci.
-                </p>
-                <p className="text-2xl font-semibold text-primary">
-                  6 500 Kč
-                </p>
-                <p className="text-sm text-muted-foreground mt-1">
-                  (úspora 1 000 Kč)
-                </p>
-              </div>
+              {content.items.map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="bg-white/30 rounded-xl p-6"
+                >
+                  <h2 className="text-xl font-display font-semibold text-primary mb-2">
+                    {item.title}
+                  </h2>
+                  <p className="text-foreground/80 mb-4">
+                    {item.description}
+                  </p>
+                  <p className={`text-2xl font-semibold ${item.isFree ? 'text-accent' : 'text-primary'}`}>
+                    {item.price}
+                  </p>
+                  {item.note && (
+                    <p className="text-sm text-muted-foreground mt-1">
+                      {item.note}
+                    </p>
+                  )}
+                </motion.div>
+              ))}
             </div>
 
-            <div className="mt-8 p-6 bg-primary/10 rounded-xl">
-              <p className="text-foreground/80 text-sm">
-                Ceny jsou uvedeny včetně DPH. Platba je možná převodem na účet nebo v hotovosti.
-                Pro více informací mě neváhejte kontaktovat.
-              </p>
-            </div>
+            {content.footer && (
+              <div className="mt-8 p-6 bg-primary/10 rounded-xl">
+                <p className="text-foreground/80 text-sm">
+                  {content.footer}
+                </p>
+              </div>
+            )}
           </motion.div>
         </div>
       </div>
