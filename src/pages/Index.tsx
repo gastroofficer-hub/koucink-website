@@ -186,27 +186,6 @@ const Index = () => {
         </div>
       </div>
 
-      {/* Rezervuj termín Button */}
-      <div className="flex justify-center px-6 py-12 md:py-16">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.6 }}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.98 }}
-        >
-          <Link to="/dotaznik">
-            <Button 
-              size="lg" 
-              className="bg-white/30 backdrop-blur-md border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground px-10 py-6 text-lg font-display font-semibold rounded-xl shadow-lg hover:shadow-[0_0_30px_rgba(74,103,65,0.5)] transition-all duration-300"
-            >
-              <CalendarCheck className="w-5 h-5 mr-2" />
-              Rezervuj termín
-            </Button>
-          </Link>
-        </motion.div>
-      </div>
 
       {/* O mně Section - appears on scroll */}
       <div className="min-h-screen flex items-center px-6 md:px-12 lg:px-20 py-12 md:py-20">
