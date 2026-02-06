@@ -24,20 +24,20 @@ interface JakProbihaContent {
   steps: CoachingStep[];
 }
 
-const navigationItems = [
-  { icon: CheckCircle, title: "Informovaný souhlas", to: "/informovany-souhlas" },
-  { icon: Scale, title: "Etický kodex", to: "/eticky-kodex" },
-  { icon: CalendarCheck, title: "Rezervace", to: "/dotaznik" },
-  { icon: Coins, title: "Ceník", to: "/cenik" },
-  { icon: Award, title: "Diplomy", to: "/diplomy" },
-  { icon: Mail, title: "Kontakt", to: "/kontakt" },
-  { icon: BookOpen, title: "Blog", to: "/blog" },
-];
-
 const scrollNavigationItems = [
   { icon: User, title: "Kdo jsem?", targetId: "kdo-jsem" },
   { icon: Heart, title: "Proč se mnou?", targetId: "proc-se-mnou" },
   { icon: ListOrdered, title: "Jak probíhá koučink?", targetId: "jak-probiha" },
+];
+
+const navigationItems = [
+  { icon: Scale, title: "Etický kodex", to: "/eticky-kodex" },
+  { icon: Award, title: "Diplomy", to: "/diplomy" },
+  { icon: Mail, title: "Kontakt", to: "/kontakt" },
+  { icon: BookOpen, title: "Blog", to: "/blog" },
+  { icon: CalendarCheck, title: "Rezervace", to: "/dotaznik" },
+  { icon: Coins, title: "Ceník", to: "/cenik" },
+  { icon: CheckCircle, title: "Informovaný souhlas", to: "/informovany-souhlas" },
 ];
 
 const defaultOMne: OMneContent = {
@@ -134,23 +134,8 @@ const Index = () => {
           </motion.div>
         </div>
 
-        {/* Navigation Cards */}
-        <div className="px-4 md:px-8 lg:px-12 pb-6 md:pb-10 overflow-x-auto">
-          <div className="flex justify-center gap-3 md:gap-4 min-w-max mx-auto">
-            {navigationItems.map((item, index) => (
-              <NavigationCard
-                key={item.to}
-                icon={item.icon}
-                title={item.title}
-                to={item.to}
-                delay={0.2 + index * 0.05}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* O mně Scroll Navigation Cards */}
-        <div className="px-4 md:px-8 lg:px-12 pb-10 md:pb-14">
+        {/* O mně Scroll Navigation Cards - first row */}
+        <div className="px-4 md:px-8 lg:px-12 pb-6 md:pb-10">
           <div className="flex justify-center gap-3 md:gap-4">
             {scrollNavigationItems.map((item, index) => (
               <ScrollNavigationCard
@@ -158,6 +143,21 @@ const Index = () => {
                 icon={item.icon}
                 title={item.title}
                 targetId={item.targetId}
+                delay={0.2 + index * 0.05}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Navigation Cards - second row */}
+        <div className="px-4 md:px-8 lg:px-12 pb-10 md:pb-14 overflow-x-auto">
+          <div className="flex justify-center gap-3 md:gap-4 min-w-max mx-auto">
+            {navigationItems.map((item, index) => (
+              <NavigationCard
+                key={item.to}
+                icon={item.icon}
+                title={item.title}
+                to={item.to}
                 delay={0.4 + index * 0.05}
               />
             ))}
