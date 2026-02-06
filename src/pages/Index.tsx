@@ -135,30 +135,30 @@ const Index = () => {
         </div>
 
         {/* Navigation Cards */}
-        <div className="px-6 md:px-12 lg:px-20 pb-8 md:pb-12">
-          <div className="flex flex-wrap justify-center gap-4 md:gap-6">
+        <div className="px-4 md:px-8 lg:px-12 pb-6 md:pb-10 overflow-x-auto">
+          <div className="flex justify-center gap-3 md:gap-4 min-w-max mx-auto">
             {navigationItems.map((item, index) => (
               <NavigationCard
                 key={item.to}
                 icon={item.icon}
                 title={item.title}
                 to={item.to}
-                delay={0.2 + index * 0.1}
+                delay={0.2 + index * 0.05}
               />
             ))}
           </div>
         </div>
 
         {/* O mně Scroll Navigation Cards */}
-        <div className="px-6 md:px-12 lg:px-20 pb-12 md:pb-16">
-          <div className="flex flex-wrap justify-center gap-4 md:gap-6">
+        <div className="px-4 md:px-8 lg:px-12 pb-10 md:pb-14">
+          <div className="flex justify-center gap-3 md:gap-4">
             {scrollNavigationItems.map((item, index) => (
               <ScrollNavigationCard
                 key={item.targetId}
                 icon={item.icon}
                 title={item.title}
                 targetId={item.targetId}
-                delay={0.5 + index * 0.1}
+                delay={0.4 + index * 0.05}
               />
             ))}
           </div>
