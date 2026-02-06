@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { CheckCircle, CalendarCheck, Mail, Award, ChevronDown, User, Heart, ListOrdered } from "lucide-react";
+import { CheckCircle, CalendarCheck, Mail, Award, ChevronDown, User, Heart, ListOrdered, BookOpen } from "lucide-react";
 import { Link } from "react-router-dom";
 import NavigationCard from "@/components/NavigationCard";
 import ScrollNavigationCard from "@/components/ScrollNavigationCard";
@@ -30,6 +30,7 @@ const navigationItems = [
   { icon: CalendarCheck, title: "Rezervace", to: "/dotaznik" },
   { icon: Award, title: "Diplomy", to: "/diplomy" },
   { icon: Mail, title: "Kontakt", to: "/kontakt" },
+  { icon: BookOpen, title: "Blog", to: "/blog" },
 ];
 
 const scrollNavigationItems = [
