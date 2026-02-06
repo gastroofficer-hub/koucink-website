@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import NavigationCard from "@/components/NavigationCard";
 import ScrollNavigationCard from "@/components/ScrollNavigationCard";
 import Footer from "@/components/Footer";
-import FallingLeaves from "@/components/FallingLeaves";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import backgroundImage from "@/assets/background.jpg";
@@ -107,7 +106,7 @@ const Index = () => {
       className="bg-cover bg-center bg-no-repeat bg-fixed relative"
       style={{ backgroundImage: `url(${backgroundImage})` }}
     >
-      <FallingLeaves />
+      
       {/* First Screen - Hero + Navigation */}
       <div className="min-h-screen flex flex-col">
         {/* Hero Section */}
