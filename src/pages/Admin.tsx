@@ -111,7 +111,7 @@ const Admin = () => {
     steps: [
       { title: "Kontakt & objednávka", text: "Napiš mi email nebo vyplň formulář na webu. Popiš, s čím potřebuješ pomoct (stres, kariéra, vztahy...). Zaručeně odpovídám do 24 hodin s návrhem volných termínů." },
       { title: "Předchozí volný rozhovor", text: "15 minutová zdarma telefonická volba. Zjistíme, jestli si sedíme, probereme tvé cíle a domluvíme první sezení." },
-      { title: "Sjednání termínu & platba", text: "Vybereme si první sezení (online/osobně). Pošlu ti fakturu a informační souhlas k podpisu. Zaplatíš zálohu a podepíšeš." },
+      { title: "Sjednání termínu & platba", text: "Vybereme si první sezení (online/osobně). Pošlu ti fakturu a informovaný souhlas k podpisu. Zaplatíš zálohu a podepíšeš." },
       { title: "Příprava na sezení", text: "Pošlu ti krátký přehled: co očekávat, jak se připravit (co si přinést, na co se zamyslet). Dostaneš i link na Zoom (online) nebo adresu (osobní schůzka)." },
       { title: "První sezení", text: "60 minut intenzivní práce. Zaměříme se na tvůj hlavní cíl, najdeme první akční kroky. Po sezení dostaneš shrnutí + \"domácí úkol\".", tags: ["Online: Zoom, Skype", "Osobně: Lanškroun", "Délka: 60 minut", "Frekvence: 1–2× měsíčně"] }
     ]
@@ -370,8 +370,8 @@ const Admin = () => {
         .eq("key", "informacni_souhlas");
 
       if (error) throw error;
-      await logChange("Informační souhlas", "Aktualizace", { sectionsCount: informacniSouhlas.sections.length });
-      toast.success("Informační souhlas byl uložen!");
+      await logChange("Informovaný souhlas", "Aktualizace", { sectionsCount: informacniSouhlas.sections.length });
+      toast.success("Informovaný souhlas byl uložen!");
     } catch (error: unknown) {
       const err = error as Error;
       toast.error("Chyba při ukládání: " + err.message);
@@ -647,7 +647,7 @@ const Admin = () => {
               </TabsTrigger>
               <TabsTrigger value="informacni-souhlas" className="gap-2">
                 <FileText className="w-4 h-4" />
-                Informační souhlas
+                Informovaný souhlas
               </TabsTrigger>
               <TabsTrigger value="kontakt" className="gap-2">
                 <Phone className="w-4 h-4" />
@@ -805,7 +805,7 @@ const Admin = () => {
                 className="glass-card rounded-2xl p-8"
               >
                 <h1 className="text-2xl font-display font-semibold text-primary mb-6">
-                  Upravit Informační souhlas
+                  Upravit Informovaný souhlas
                 </h1>
 
                 <div className="space-y-6">
