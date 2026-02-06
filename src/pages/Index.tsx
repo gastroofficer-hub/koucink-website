@@ -25,7 +25,7 @@ interface JakProbihaContent {
 }
 
 const navigationItems = [
-  { icon: CheckCircle, title: "Informační souhlas", to: "/informovany-souhlas" },
+  { icon: CheckCircle, title: "Informovaný souhlas", to: "/informovany-souhlas" },
   { icon: CalendarCheck, title: "Rezervace", to: "/dotaznik" },
   { icon: Coins, title: "Ceník", to: "/cenik" },
   { icon: Award, title: "Diplomy", to: "/diplomy" },
