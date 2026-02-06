@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { CheckCircle, CalendarCheck, Mail, Award, ChevronDown, User, Heart, ListOrdered, BookOpen, Coins, Scale, Quote } from "lucide-react";
+import { CheckCircle, CalendarCheck, Mail, Award, ChevronDown, User, Heart, ListOrdered, BookOpen, Coins, Scale, Quote, HelpCircle } from "lucide-react";
+import { Link } from "react-router-dom";
 import NavigationCard from "@/components/NavigationCard";
 import ScrollNavigationCard from "@/components/ScrollNavigationCard";
 import Footer from "@/components/Footer";
 import TestimonialsSection from "@/components/TestimonialsSection";
+import FAQSection from "@/components/FAQSection";
+import StickyNavigation from "@/components/StickyNavigation";
 import { supabase } from "@/integrations/supabase/client";
 import backgroundImage from "@/assets/background.jpg";
 
@@ -28,6 +31,7 @@ const scrollNavigationItems = [
   { icon: Heart, title: "Proč se mnou?", targetId: "proc-se-mnou" },
   { icon: ListOrdered, title: "Jak probíhá koučink?", targetId: "jak-probiha" },
   { icon: Quote, title: "Reference", targetId: "reference" },
+  { icon: HelpCircle, title: "FAQ", targetId: "faq" },
 ];
 
 const navigationItems = [
@@ -108,6 +112,8 @@ const Index = () => {
       className="bg-cover bg-center bg-no-repeat bg-fixed relative"
       style={{ backgroundImage: `url(${backgroundImage})` }}
     >
+      {/* Sticky Navigation */}
+      <StickyNavigation />
       
       {/* First Screen - Hero + Navigation */}
       <div className="min-h-screen flex flex-col">
@@ -122,9 +128,29 @@ const Index = () => {
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-semibold text-primary mb-4 leading-tight">
               Koučink je cesta
             </h1>
-            <p className="text-lg md:text-xl text-foreground/80 mb-6">
+            <p className="text-lg md:text-xl text-foreground/80 mb-8">
               Objevujte nové cesty rozvoje a vedení.
             </p>
+            
+            {/* CTA Button */}
+            <div className="flex flex-col sm:flex-row gap-4 mb-6">
+              <Link to="/dotaznik">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-8 py-4 bg-primary text-primary-foreground rounded-full font-medium text-lg shadow-lg hover:shadow-xl transition-shadow"
+                >
+                  Rezervovat konzultaci zdarma
+                </motion.button>
+              </Link>
+              <button
+                onClick={() => document.getElementById('kdo-jsem')?.scrollIntoView({ behavior: 'smooth' })}
+                className="px-8 py-4 bg-white/50 backdrop-blur-sm text-primary rounded-full font-medium text-lg border border-primary/20 hover:bg-white/70 transition-colors"
+              >
+                Zjistit více
+              </button>
+            </div>
+            
             <motion.div 
               className="w-16 h-0.5 bg-primary/40"
               initial={{ width: 0 }}
@@ -290,6 +316,9 @@ const Index = () => {
 
       {/* Testimonials Section */}
       <TestimonialsSection />
+
+      {/* FAQ Section */}
+      <FAQSection />
 
       {/* Footer */}
       <Footer />
