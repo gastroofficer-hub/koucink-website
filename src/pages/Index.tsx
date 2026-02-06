@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { CheckCircle, CalendarCheck, Mail, Award, ChevronDown } from "lucide-react";
+import { CheckCircle, CalendarCheck, Mail, Award, ChevronDown, User, Heart, ListOrdered } from "lucide-react";
 import { Link } from "react-router-dom";
 import NavigationCard from "@/components/NavigationCard";
+import ScrollNavigationCard from "@/components/ScrollNavigationCard";
 import Footer from "@/components/Footer";
 import FallingLeaves from "@/components/FallingLeaves";
 import { Button } from "@/components/ui/button";
@@ -29,6 +30,12 @@ const navigationItems = [
   { icon: CalendarCheck, title: "Rezervace", to: "/dotaznik" },
   { icon: Award, title: "Diplomy", to: "/diplomy" },
   { icon: Mail, title: "Kontakt", to: "/kontakt" },
+];
+
+const scrollNavigationItems = [
+  { icon: User, title: "Kdo jsem?", targetId: "kdo-jsem" },
+  { icon: Heart, title: "Proč se mnou?", targetId: "proc-se-mnou" },
+  { icon: ListOrdered, title: "Jak probíhá koučink?", targetId: "jak-probiha" },
 ];
 
 const defaultOMne: OMneContent = {
@@ -126,7 +133,7 @@ const Index = () => {
         </div>
 
         {/* Navigation Cards */}
-        <div className="px-6 md:px-12 lg:px-20 pb-12 md:pb-16">
+        <div className="px-6 md:px-12 lg:px-20 pb-8 md:pb-12">
           <div className="flex flex-wrap justify-center gap-4 md:gap-6">
             {navigationItems.map((item, index) => (
               <NavigationCard
@@ -135,6 +142,21 @@ const Index = () => {
                 title={item.title}
                 to={item.to}
                 delay={0.2 + index * 0.1}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* O mně Scroll Navigation Cards */}
+        <div className="px-6 md:px-12 lg:px-20 pb-12 md:pb-16">
+          <div className="flex flex-wrap justify-center gap-4 md:gap-6">
+            {scrollNavigationItems.map((item, index) => (
+              <ScrollNavigationCard
+                key={item.targetId}
+                icon={item.icon}
+                title={item.title}
+                targetId={item.targetId}
+                delay={0.5 + index * 0.1}
               />
             ))}
           </div>
@@ -198,8 +220,8 @@ const Index = () => {
             O mně
           </h2>
           
-          <div className="space-y-8">
-            <div>
+          <div className="space-y-12">
+            <div id="kdo-jsem" className="scroll-mt-8">
               <h3 className="text-xl font-display font-semibold text-primary mb-4">
                 Kdo jsem?
               </h3>
@@ -210,7 +232,7 @@ const Index = () => {
               </div>
             </div>
 
-            <div>
+            <div id="proc-se-mnou" className="scroll-mt-8">
               <h3 className="text-xl font-display font-semibold text-primary mb-4">
                 Proč se mnou?
               </h3>
@@ -221,7 +243,7 @@ const Index = () => {
               </div>
             </div>
 
-            <div>
+            <div id="jak-probiha" className="scroll-mt-8">
               <h3 className="text-xl font-display font-semibold text-primary mb-4">
                 Jak probíhá koučink?
               </h3>
