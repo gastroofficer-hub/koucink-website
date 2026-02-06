@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
 import logo from "@/assets/logo.png";
 
@@ -10,18 +10,32 @@ interface NavItem {
   targetId?: string;
 }
 
-const navItems: NavItem[] = [
-  { label: "O mně", targetId: "kdo-jsem" },
+interface DropdownItem {
+  label: string;
+  href: string;
+}
+
+const scrollItems: NavItem[] = [
+  { label: "Kdo jsem?", targetId: "kdo-jsem" },
+  { label: "Proč se mnou?", targetId: "proc-se-mnou" },
   { label: "Jak probíhá", targetId: "jak-probiha" },
   { label: "Reference", targetId: "reference" },
   { label: "FAQ", targetId: "faq" },
-  { label: "Ceník", href: "/cenik" },
+];
+
+const pageItems: DropdownItem[] = [
+  { label: "Etický kodex", href: "/eticky-kodex" },
+  { label: "Diplomy", href: "/diplomy" },
   { label: "Kontakt", href: "/kontakt" },
+  { label: "Blog", href: "/blog" },
+  { label: "Ceník", href: "/cenik" },
+  { label: "Informovaný souhlas", href: "/informovany-souhlas" },
 ];
 
 const StickyNavigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,12 +46,26 @@ const StickyNavigation = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest(".dropdown-container")) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
+
   const scrollToSection = (targetId: string) => {
     const element = document.getElementById(targetId);
     if (element) {
       element.scrollIntoView({ behavior: "smooth", block: "start" });
     }
     setIsMobileMenuOpen(false);
+    setIsDropdownOpen(false);
   };
 
   return (
@@ -48,48 +76,79 @@ const StickyNavigation = () => {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -100, opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-primary/10 shadow-sm"
+          className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-primary/10 shadow-sm"
         >
-          <div className="max-w-6xl mx-auto px-4 md:px-6">
+          <div className="max-w-7xl mx-auto px-4 md:px-6">
             <div className="flex items-center justify-between h-16">
               {/* Logo */}
-              <Link to="/" className="flex items-center gap-2">
+              <Link to="/" className="flex items-center gap-2 flex-shrink-0">
                 <img src={logo} alt="Logo" className="h-10 w-auto" />
               </Link>
 
               {/* Desktop Navigation */}
-              <nav className="hidden md:flex items-center gap-6">
-                {navItems.map((item) =>
-                  item.href ? (
-                    <Link
-                      key={item.label}
-                      to={item.href}
-                      className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors"
-                    >
-                      {item.label}
-                    </Link>
-                  ) : (
-                    <button
-                      key={item.label}
-                      onClick={() => scrollToSection(item.targetId!)}
-                      className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors"
-                    >
-                      {item.label}
-                    </button>
-                  )
-                )}
+              <nav className="hidden lg:flex items-center gap-1">
+                {/* Scroll sections */}
+                {scrollItems.map((item) => (
+                  <button
+                    key={item.label}
+                    onClick={() => scrollToSection(item.targetId!)}
+                    className="px-3 py-2 text-sm font-medium text-foreground/80 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors"
+                  >
+                    {item.label}
+                  </button>
+                ))}
+
+                {/* Dropdown for pages */}
+                <div className="relative dropdown-container">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsDropdownOpen(!isDropdownOpen);
+                    }}
+                    className="px-3 py-2 text-sm font-medium text-foreground/80 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors inline-flex items-center gap-1"
+                  >
+                    Více
+                    <ChevronDown className={`w-4 h-4 transition-transform ${isDropdownOpen ? "rotate-180" : ""}`} />
+                  </button>
+
+                  <AnimatePresence>
+                    {isDropdownOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.15 }}
+                        className="absolute top-full right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-primary/10 overflow-hidden z-50"
+                      >
+                        <div className="py-2">
+                          {pageItems.map((item) => (
+                            <Link
+                              key={item.href}
+                              to={item.href}
+                              onClick={() => setIsDropdownOpen(false)}
+                              className="block px-4 py-2.5 text-sm text-foreground/80 hover:text-primary hover:bg-primary/5 transition-colors"
+                            >
+                              {item.label}
+                            </Link>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
                 <Link
                   to="/dotaznik"
-                  className="ml-2 px-4 py-2 bg-primary text-primary-foreground rounded-full text-sm font-medium hover:bg-primary/90 transition-colors"
+                  className="ml-3 px-5 py-2 bg-primary text-primary-foreground rounded-full text-sm font-medium hover:bg-primary/90 transition-colors"
                 >
-                  Rezervovat
+                  Rezervace
                 </Link>
               </nav>
 
               {/* Mobile Menu Button */}
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="md:hidden p-2 text-foreground"
+                className="lg:hidden p-2 text-foreground"
               >
                 {isMobileMenuOpen ? (
                   <X className="w-6 h-6" />
@@ -107,33 +166,46 @@ const StickyNavigation = () => {
                   animate={{ height: "auto", opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
                   transition={{ duration: 0.2 }}
-                  className="md:hidden overflow-hidden pb-4"
+                  className="lg:hidden overflow-hidden pb-4"
                 >
-                  <div className="flex flex-col gap-2">
-                    {navItems.map((item) =>
-                      item.href ? (
-                        <Link
-                          key={item.label}
-                          to={item.href}
-                          onClick={() => setIsMobileMenuOpen(false)}
-                          className="px-4 py-2 text-foreground/80 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors"
-                        >
-                          {item.label}
-                        </Link>
-                      ) : (
-                        <button
-                          key={item.label}
-                          onClick={() => scrollToSection(item.targetId!)}
-                          className="px-4 py-2 text-left text-foreground/80 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors"
-                        >
-                          {item.label}
-                        </button>
-                      )
-                    )}
+                  <div className="flex flex-col gap-1">
+                    {/* Section heading */}
+                    <p className="px-4 py-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                      Na stránce
+                    </p>
+                    {scrollItems.map((item) => (
+                      <button
+                        key={item.label}
+                        onClick={() => scrollToSection(item.targetId!)}
+                        className="px-4 py-2.5 text-left text-foreground/80 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors"
+                      >
+                        {item.label}
+                      </button>
+                    ))}
+
+                    {/* Divider */}
+                    <div className="my-2 border-t border-primary/10" />
+
+                    {/* Pages heading */}
+                    <p className="px-4 py-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                      Stránky
+                    </p>
+                    {pageItems.map((item) => (
+                      <Link
+                        key={item.href}
+                        to={item.href}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="px-4 py-2.5 text-foreground/80 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors"
+                      >
+                        {item.label}
+                      </Link>
+                    ))}
+
+                    {/* CTA */}
                     <Link
                       to="/dotaznik"
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className="mx-4 mt-2 px-4 py-2 bg-primary text-primary-foreground rounded-full text-sm font-medium text-center hover:bg-primary/90 transition-colors"
+                      className="mx-4 mt-3 px-4 py-3 bg-primary text-primary-foreground rounded-full text-sm font-medium text-center hover:bg-primary/90 transition-colors"
                     >
                       Rezervovat konzultaci
                     </Link>
