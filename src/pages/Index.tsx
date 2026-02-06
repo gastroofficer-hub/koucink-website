@@ -59,7 +59,7 @@ const defaultJakProbiha: JakProbihaContent = {
     },
     {
       title: "Sjednání termínu & platba",
-      text: "Vybereme si první sezení (online/osobně). Pošlu ti fakturu a informační souhlas k podpisu. Zaplatíš zálohu a podepíšeš."
+      text: "Vybereme si první sezení (online/osobně). Pošlu ti fakturu a informovaný souhlas k podpisu. Zaplatíš zálohu a podepíšeš."
     },
     {
       title: "Příprava na sezení",
