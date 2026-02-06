@@ -13,22 +13,24 @@ interface NavItem {
 interface DropdownItem {
   label: string;
   href: string;
+  isScroll?: boolean;
+  targetId?: string;
 }
 
 const scrollItems: NavItem[] = [
   { label: "Kdo jsem?", targetId: "kdo-jsem" },
   { label: "Proč se mnou?", targetId: "proc-se-mnou" },
-  { label: "Jak probíhá", targetId: "jak-probiha" },
   { label: "Reference", targetId: "reference" },
   { label: "FAQ", targetId: "faq" },
 ];
 
-const pageItems: DropdownItem[] = [
+
+const dropdownItems: DropdownItem[] = [
+  { label: "Jak probíhá koučink?", href: "/#jak-probiha", isScroll: true, targetId: "jak-probiha" },
   { label: "Etický kodex", href: "/eticky-kodex" },
   { label: "Diplomy", href: "/diplomy" },
   { label: "Kontakt", href: "/kontakt" },
   { label: "Blog", href: "/blog" },
-  { label: "Ceník", href: "/cenik" },
   { label: "Informovaný souhlas", href: "/informovany-souhlas" },
 ];
 
@@ -98,6 +100,14 @@ const StickyNavigation = () => {
                   </button>
                 ))}
 
+                {/* Ceník as main item */}
+                <Link
+                  to="/cenik"
+                  className="px-3 py-2 text-sm font-medium text-foreground/80 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors"
+                >
+                  Ceník
+                </Link>
+
                 {/* Dropdown for pages */}
                 <div className="relative dropdown-container">
                   <button
@@ -121,16 +131,26 @@ const StickyNavigation = () => {
                         className="absolute top-full right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-primary/10 overflow-hidden z-50"
                       >
                         <div className="py-2">
-                          {pageItems.map((item) => (
-                            <Link
-                              key={item.href}
-                              to={item.href}
-                              onClick={() => setIsDropdownOpen(false)}
-                              className="block px-4 py-2.5 text-sm text-foreground/80 hover:text-primary hover:bg-primary/5 transition-colors"
-                            >
-                              {item.label}
-                            </Link>
-                          ))}
+                          {dropdownItems.map((item) => 
+                            item.isScroll ? (
+                              <button
+                                key={item.label}
+                                onClick={() => scrollToSection(item.targetId!)}
+                                className="block w-full text-left px-4 py-2.5 text-sm text-foreground/80 hover:text-primary hover:bg-primary/5 transition-colors"
+                              >
+                                {item.label}
+                              </button>
+                            ) : (
+                              <Link
+                                key={item.href}
+                                to={item.href}
+                                onClick={() => setIsDropdownOpen(false)}
+                                className="block px-4 py-2.5 text-sm text-foreground/80 hover:text-primary hover:bg-primary/5 transition-colors"
+                              >
+                                {item.label}
+                              </Link>
+                            )
+                          )}
                         </div>
                       </motion.div>
                     )}
@@ -190,16 +210,26 @@ const StickyNavigation = () => {
                     <p className="px-4 py-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                       Stránky
                     </p>
-                    {pageItems.map((item) => (
-                      <Link
-                        key={item.href}
-                        to={item.href}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="px-4 py-2.5 text-foreground/80 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors"
-                      >
-                        {item.label}
-                      </Link>
-                    ))}
+                    {dropdownItems.map((item) => 
+                      item.isScroll ? (
+                        <button
+                          key={item.label}
+                          onClick={() => scrollToSection(item.targetId!)}
+                          className="w-full text-left px-4 py-2.5 text-foreground/80 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors"
+                        >
+                          {item.label}
+                        </button>
+                      ) : (
+                        <Link
+                          key={item.href}
+                          to={item.href}
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          className="block px-4 py-2.5 text-foreground/80 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors"
+                        >
+                          {item.label}
+                        </Link>
+                      )
+                    )}
 
                     {/* CTA */}
                     <Link
