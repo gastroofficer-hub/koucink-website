@@ -8,6 +8,7 @@ import InformovanySouhlas from "./pages/InformovanySouhlas";
 import Dotaznik from "./pages/Dotaznik";
 import Kontakt from "./pages/Kontakt";
 import Diplomy from "./pages/Diplomy";
+import Cenik from "./pages/Cenik";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import Auth from "./pages/Auth";
@@ -28,6 +29,7 @@ const App = () => (
           <Route path="/dotaznik" element={<Dotaznik />} />
           <Route path="/kontakt" element={<Kontakt />} />
           <Route path="/diplomy" element={<Diplomy />} />
+          <Route path="/cenik" element={<Cenik />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:id" element={<BlogPost />} />
           <Route path="/auth" element={<Auth />} />
