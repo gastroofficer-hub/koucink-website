@@ -7,9 +7,10 @@ import backgroundImage from "@/assets/background.jpg";
 interface PageLayoutProps {
   title: string;
   children: ReactNode;
+  headerRight?: ReactNode;
 }
 
-const PageLayout = ({ title, children }: PageLayoutProps) => {
+const PageLayout = ({ title, children, headerRight }: PageLayoutProps) => {
   return (
     <div 
       className="page-bg"
@@ -37,9 +38,16 @@ const PageLayout = ({ title, children }: PageLayoutProps) => {
             transition={{ duration: 0.6 }}
             className="glass-card rounded-2xl p-8 md:p-12"
           >
-            <h1 className="text-3xl md:text-4xl font-display font-semibold text-primary mb-8">
-              {title}
-            </h1>
+            <div className="flex items-center justify-between mb-8">
+              <h1 className="text-3xl md:text-4xl font-display font-semibold text-primary">
+                {title}
+              </h1>
+              {headerRight && (
+                <div className="hidden lg:block">
+                  {headerRight}
+                </div>
+              )}
+            </div>
             {children}
           </motion.div>
         </div>
