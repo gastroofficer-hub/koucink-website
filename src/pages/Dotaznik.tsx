@@ -147,7 +147,7 @@ const Dotaznik = () => {
                 onChange={(e) => setFormData({ ...formData, sessionType: e.target.value })}
                 className="w-4 h-4 text-primary border-primary/30 focus:ring-primary"
               />
-              <span className="text-foreground">Online sezení</span>
+              <span className="text-foreground">Online sezení (TEAMS, WhatsApp, Skype)</span>
             </label>
           </div>
         </div>
