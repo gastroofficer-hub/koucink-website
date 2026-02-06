@@ -42,7 +42,7 @@ const InformovanySouhlas = () => {
 
   if (loading) {
     return (
-      <PageLayout title="Informační souhlas">
+      <PageLayout title="Informovaný souhlas">
         <p className="text-muted-foreground">Načítání...</p>
       </PageLayout>
     );
@@ -75,7 +75,7 @@ const InformovanySouhlas = () => {
   const displayContent = content || defaultContent;
 
   return (
-    <PageLayout title="Informační souhlas">
+    <PageLayout title="Informovaný souhlas">
       <div className="space-y-6">
         <div className="flex justify-end print:hidden">
           <Button
