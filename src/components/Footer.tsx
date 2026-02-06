@@ -11,7 +11,7 @@ const Footer = () => {
             to="/informovany-souhlas" 
             className="text-sm font-medium hover:text-gold transition-colors duration-300"
           >
-            Informační souhlas
+            Informovaný souhlas
           </Link>
           <Link 
             to="/dotaznik" 
