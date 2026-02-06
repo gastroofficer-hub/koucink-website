@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { CheckCircle, CalendarCheck, Mail, Award, ChevronDown, User, Heart, ListOrdered, BookOpen, Coins, Scale } from "lucide-react";
-import { Link } from "react-router-dom";
+import { CheckCircle, CalendarCheck, Mail, Award, ChevronDown, User, Heart, ListOrdered, BookOpen, Coins, Scale, Quote } from "lucide-react";
 import NavigationCard from "@/components/NavigationCard";
 import ScrollNavigationCard from "@/components/ScrollNavigationCard";
 import Footer from "@/components/Footer";
-import { Button } from "@/components/ui/button";
+import TestimonialsSection from "@/components/TestimonialsSection";
 import { supabase } from "@/integrations/supabase/client";
 import backgroundImage from "@/assets/background.jpg";
 
@@ -28,6 +27,7 @@ const scrollNavigationItems = [
   { icon: User, title: "Kdo jsem?", targetId: "kdo-jsem" },
   { icon: Heart, title: "Proč se mnou?", targetId: "proc-se-mnou" },
   { icon: ListOrdered, title: "Jak probíhá koučink?", targetId: "jak-probiha" },
+  { icon: Quote, title: "Reference", targetId: "reference" },
 ];
 
 const navigationItems = [
@@ -287,6 +287,9 @@ const Index = () => {
           </motion.div>
         </div>
       </div>
+
+      {/* Testimonials Section */}
+      <TestimonialsSection />
 
       {/* Footer */}
       <Footer />
