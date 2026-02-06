@@ -60,8 +60,9 @@ const validateRequest = (data: QuestionnaireRequest): { valid: boolean; errors: 
   if (!isValidString(data.firstName, 100)) {
     errors.push("Jméno je povinné a musí mít max. 100 znaků");
   }
-  if (!isValidString(data.lastName, 100)) {
-    errors.push("Příjmení je povinné a musí mít max. 100 znaků");
+  // lastName is optional, but if provided must be <= 100 chars
+  if (data.lastName && data.lastName.length > 100) {
+    errors.push("Příjmení musí mít max. 100 znaků");
   }
   if (!data.email || !isValidEmail(data.email)) {
     errors.push("Neplatný formát e-mailu");
