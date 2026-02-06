@@ -23,8 +23,8 @@ const ScrollNavigationCard = ({ icon: Icon, title, targetId, delay = 0 }: Scroll
       transition={{ duration: 0.5, delay }}
     >
       <button onClick={handleClick} className="w-full">
-        <div className="glass-card rounded-xl p-4 md:p-5 text-center cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-xl group w-[110px] md:w-[130px]">
-          <Icon className="w-8 h-8 md:w-9 md:h-9 mx-auto mb-2 text-primary group-hover:text-accent transition-colors duration-300" strokeWidth={1.5} />
+        <div className="glass-card rounded-xl p-4 md:p-5 text-center cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-xl group w-[120px] h-[100px] md:w-[140px] md:h-[115px] flex flex-col items-center justify-center">
+          <Icon className="w-8 h-8 md:w-9 md:h-9 mb-2 text-primary group-hover:text-accent transition-colors duration-300" strokeWidth={1.5} />
           <span className="text-xs md:text-sm font-medium text-foreground leading-tight block">{title}</span>
         </div>
       </button>
