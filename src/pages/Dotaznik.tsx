@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import logo from "@/assets/logo.png";
 
 const Dotaznik = () => {
   const [formData, setFormData] = useState({
@@ -45,7 +46,8 @@ const Dotaznik = () => {
 
   return (
     <PageLayout title="Rezervace">
-      <form onSubmit={handleSubmit} className="space-y-8">
+      <div className="flex gap-8">
+        <form onSubmit={handleSubmit} className="space-y-8 flex-1">
         <div className="grid md:grid-cols-2 gap-6">
           <div className="space-y-2">
             <Label htmlFor="firstName" className="text-foreground font-medium">Jméno</Label>
@@ -172,6 +174,16 @@ const Dotaznik = () => {
           {isSubmitting ? "Odesílám..." : "Odeslat dotazník"}
         </Button>
       </form>
+        
+        {/* Logo na pravé straně - pouze na desktopu */}
+        <div className="hidden lg:flex items-center justify-center pl-8">
+          <img 
+            src={logo} 
+            alt="Zeman - koučink" 
+            className="w-40 h-auto opacity-80"
+          />
+        </div>
+      </div>
     </PageLayout>
   );
 };
