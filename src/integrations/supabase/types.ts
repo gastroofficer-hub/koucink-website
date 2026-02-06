@@ -210,6 +210,9 @@ export type Database = {
           id: string
           is_visible: boolean
           order_index: number
+          photo_path: string | null
+          photo_url: string | null
+          rating: number | null
           text: string
           updated_at: string
         }
@@ -220,6 +223,9 @@ export type Database = {
           id?: string
           is_visible?: boolean
           order_index?: number
+          photo_path?: string | null
+          photo_url?: string | null
+          rating?: number | null
           text: string
           updated_at?: string
         }
@@ -230,6 +236,9 @@ export type Database = {
           id?: string
           is_visible?: boolean
           order_index?: number
+          photo_path?: string | null
+          photo_url?: string | null
+          rating?: number | null
           text?: string
           updated_at?: string
         }
