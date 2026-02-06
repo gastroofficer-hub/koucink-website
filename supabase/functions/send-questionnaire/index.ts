@@ -134,7 +134,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     const emailResponse = await resend.emails.send({
       from: "Dotazník <onboarding@resend.dev>",
-      to: ["Zeman.o82@gmail.com"],
+      to: ["koucondra@gmail.com"],
       subject: `Nový dotazník od ${escapeHtml(firstName)} ${escapeHtml(lastName)}`,
       html: `
         <h1>Nový dotazník</h1>
