@@ -181,6 +181,24 @@ export type Database = {
         }
         Relationships: []
       }
+      rate_limit_submissions: {
+        Row: {
+          created_at: string
+          id: string
+          ip_address: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          ip_address: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          ip_address?: string
+        }
+        Relationships: []
+      }
       site_content: {
         Row: {
           content: Json
@@ -249,6 +267,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      cleanup_old_rate_limits: { Args: never; Returns: undefined }
       is_admin: { Args: { _user_id: string }; Returns: boolean }
     }
     Enums: {

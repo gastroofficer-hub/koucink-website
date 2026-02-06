@@ -1,13 +1,18 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "https://esm.sh/resend@2.0.0";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type",
+    "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
+
+// Rate limiting configuration
+const RATE_LIMIT_WINDOW_MINUTES = 60;
+const MAX_REQUESTS_PER_WINDOW = 5;
 
 interface QuestionnaireRequest {
   firstName: string;
@@ -86,15 +91,118 @@ const validateRequest = (data: QuestionnaireRequest): { valid: boolean; errors: 
   return { valid: errors.length === 0, errors };
 };
 
+// Get client IP from request headers
+const getClientIP = (req: Request): string => {
+  // Check various headers for client IP (Cloudflare, X-Forwarded-For, etc.)
+  const cfConnectingIP = req.headers.get("cf-connecting-ip");
+  if (cfConnectingIP) return cfConnectingIP;
+
+  const xForwardedFor = req.headers.get("x-forwarded-for");
+  if (xForwardedFor) {
+    // Take the first IP in the chain (original client)
+    return xForwardedFor.split(",")[0].trim();
+  }
+
+  const xRealIP = req.headers.get("x-real-ip");
+  if (xRealIP) return xRealIP;
+
+  // Fallback to a hash of user-agent + timestamp if no IP available
+  return "unknown-" + Date.now();
+};
+
+// Check rate limit using database
+const checkRateLimit = async (supabase: ReturnType<typeof createClient>, ipAddress: string): Promise<{ allowed: boolean; remaining: number }> => {
+  const windowStart = new Date(Date.now() - RATE_LIMIT_WINDOW_MINUTES * 60 * 1000).toISOString();
+
+  // Count recent submissions from this IP
+  const { count, error } = await supabase
+    .from("rate_limit_submissions")
+    .select("*", { count: "exact", head: true })
+    .eq("ip_address", ipAddress)
+    .gte("created_at", windowStart);
+
+  if (error) {
+    console.error("Error checking rate limit:", error);
+    // On error, allow the request but log it
+    return { allowed: true, remaining: MAX_REQUESTS_PER_WINDOW };
+  }
+
+  const currentCount = count || 0;
+  const remaining = Math.max(0, MAX_REQUESTS_PER_WINDOW - currentCount);
+  
+  return { 
+    allowed: currentCount < MAX_REQUESTS_PER_WINDOW, 
+    remaining 
+  };
+};
+
+// Record a submission for rate limiting
+const recordSubmission = async (supabase: ReturnType<typeof createClient>, ipAddress: string): Promise<void> => {
+  const { error } = await supabase
+    .from("rate_limit_submissions")
+    .insert({ ip_address: ipAddress });
+
+  if (error) {
+    console.error("Error recording submission:", error);
+  }
+
+  // Cleanup old entries occasionally (1% chance per request)
+  if (Math.random() < 0.01) {
+    await supabase.rpc("cleanup_old_rate_limits");
+  }
+};
+
 const handler = async (req: Request): Promise<Response> => {
   console.log("Received request to send-questionnaire function");
 
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
+    return new Response("ok", { headers: corsHeaders });
   }
 
   try {
+    // Initialize Supabase client with service role for rate limiting
+    const supabaseUrl = Deno.env.get("SUPABASE_URL");
+    const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+
+    if (!supabaseUrl || !supabaseServiceKey) {
+      console.error("Missing Supabase configuration");
+      return new Response(
+        JSON.stringify({ error: "Chyba konfigurace serveru" }),
+        {
+          status: 500,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
+    }
+
+    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
+    // Get client IP for rate limiting
+    const clientIP = getClientIP(req);
+    console.log("Client IP:", clientIP);
+
+    // Check rate limit
+    const rateLimitResult = await checkRateLimit(supabase, clientIP);
+    
+    if (!rateLimitResult.allowed) {
+      console.warn("Rate limit exceeded for IP:", clientIP);
+      return new Response(
+        JSON.stringify({ 
+          error: "Příliš mnoho požadavků. Zkuste to prosím za hodinu.", 
+          retryAfter: RATE_LIMIT_WINDOW_MINUTES * 60 
+        }),
+        {
+          status: 429,
+          headers: { 
+            "Content-Type": "application/json", 
+            "Retry-After": String(RATE_LIMIT_WINDOW_MINUTES * 60),
+            ...corsHeaders 
+          },
+        }
+      );
+    }
+
     let requestData: QuestionnaireRequest;
     
     try {
@@ -125,7 +233,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     const { firstName, lastName, email, phone, maritalStatus, maritalStatusOther, sessionType, coachingTopic } = requestData;
 
-    console.log("Processing questionnaire from:", escapeHtml(firstName), escapeHtml(lastName), escapeHtml(email));
+    console.log("Processing questionnaire from:", escapeHtml(firstName), escapeHtml(lastName));
 
     // Format marital status - if "jiné" is selected, use the custom value
     const formattedMaritalStatus = maritalStatus === "jiné" && maritalStatusOther 
@@ -151,7 +259,13 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log("Email sent successfully:", emailResponse);
 
-    return new Response(JSON.stringify(emailResponse), {
+    // Record successful submission for rate limiting
+    await recordSubmission(supabase, clientIP);
+
+    return new Response(JSON.stringify({ 
+      ...emailResponse,
+      rateLimitRemaining: rateLimitResult.remaining - 1
+    }), {
       status: 200,
       headers: {
         "Content-Type": "application/json",
