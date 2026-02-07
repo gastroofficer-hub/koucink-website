@@ -89,26 +89,51 @@ const BlogPostPage = () => {
 
   const handleSubmitComment = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!commentForm.author_name.trim() || !commentForm.content.trim()) {
+    const authorName = commentForm.author_name.trim();
+    const content = commentForm.content.trim();
+    
+    if (!authorName || !content) {
       toast.error("Vyplňte prosím všechna pole.");
       return;
     }
 
-    setSubmitting(true);
-    const { error } = await supabase.from("blog_comments").insert({
-      post_id: id,
-      author_name: commentForm.author_name.trim(),
-      content: commentForm.content.trim()
-    });
+    if (authorName.length > 100) {
+      toast.error("Jméno nesmí přesáhnout 100 znaků.");
+      return;
+    }
 
-    if (error) {
+    if (content.length > 1000) {
+      toast.error("Komentář nesmí přesáhnout 1000 znaků.");
+      return;
+    }
+
+    setSubmitting(true);
+    
+    try {
+      const response = await supabase.functions.invoke("submit-blog-comment", {
+        body: {
+          post_id: id,
+          author_name: authorName,
+          content: content
+        }
+      });
+
+      if (response.error) {
+        throw new Error(response.error.message || "Nepodařilo se přidat komentář.");
+      }
+
+      if (response.data?.error) {
+        toast.error(response.data.error);
+      } else {
+        toast.success("Komentář byl přidán!");
+        setCommentForm({ author_name: "", content: "" });
+        fetchComments();
+      }
+    } catch (error) {
       toast.error("Nepodařilo se přidat komentář.");
       console.error(error);
-    } else {
-      toast.success("Komentář byl přidán!");
-      setCommentForm({ author_name: "", content: "" });
-      fetchComments();
     }
+    
     setSubmitting(false);
   };
 

@@ -35,6 +35,24 @@ export type Database = {
         }
         Relationships: []
       }
+      blog_comment_rate_limits: {
+        Row: {
+          created_at: string
+          id: string
+          ip_address: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          ip_address: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          ip_address?: string
+        }
+        Relationships: []
+      }
       blog_comments: {
         Row: {
           author_name: string
@@ -267,6 +285,11 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      check_blog_comment_rate_limit: {
+        Args: { client_ip: string }
+        Returns: boolean
+      }
+      cleanup_old_blog_comment_rate_limits: { Args: never; Returns: undefined }
       cleanup_old_rate_limits: { Args: never; Returns: undefined }
       is_admin: { Args: { _user_id: string }; Returns: boolean }
     }
