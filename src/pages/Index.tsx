@@ -6,7 +6,6 @@ import ScrollNavigationCard from "@/components/ScrollNavigationCard";
 import Footer from "@/components/Footer";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import FAQSection from "@/components/FAQSection";
-import StickyNavigation from "@/components/StickyNavigation";
 import StatsSection from "@/components/StatsSection";
 import ThemeToggle from "@/components/ThemeToggle";
 import { supabase } from "@/integrations/supabase/client";
@@ -114,9 +113,6 @@ const Index = () => {
         className="fixed inset-0 bg-cover bg-center bg-no-repeat -z-10"
         style={{ backgroundImage: `url(${backgroundImage})` }}
       />
-      {/* Sticky Navigation */}
-      <StickyNavigation />
-
       {/* Fixed theme toggle visible before sticky nav appears */}
       <div className="fixed top-4 right-4 z-40">
         <ThemeToggle />
