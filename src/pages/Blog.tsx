@@ -137,7 +137,7 @@ const Blog = () => {
                               </span>
                               <span className="flex items-center gap-1">
                                 <User className="w-4 h-4" />
-                                {post.author_email}
+                                Ondřej Zeman
                               </span>
                             </div>
                           </div>

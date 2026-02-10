@@ -258,7 +258,7 @@ const BlogPostPage = () => {
                 </span>
                 <span className="flex items-center gap-1">
                   <User className="w-4 h-4" />
-                  {post.author_email}
+                  Ondřej Zeman
                 </span>
               </div>
               <div className="prose prose-lg max-w-none text-foreground/90 whitespace-pre-wrap">
