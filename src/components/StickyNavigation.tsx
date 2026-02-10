@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
 import logo from "@/assets/logo.png";
+import ThemeToggle from "@/components/ThemeToggle";
 
 interface NavItem {
   label: string;
@@ -159,6 +160,8 @@ const StickyNavigation = () => {
                   </AnimatePresence>
                 </div>
 
+                <ThemeToggle />
+
                 <Link
                   to="/dotaznik"
                   className="ml-3 px-5 py-2 bg-primary text-primary-foreground rounded-full text-sm font-medium hover:bg-primary/90 hover:shadow-md hover:scale-105 transition-all duration-300"
@@ -233,7 +236,11 @@ const StickyNavigation = () => {
                       )
                     )}
 
-                    {/* CTA */}
+                    {/* Theme toggle + CTA */}
+                    <div className="mx-4 mt-3 flex items-center gap-3">
+                      <ThemeToggle />
+                      <span className="text-sm text-muted-foreground">Tmavý režim</span>
+                    </div>
                     <Link
                       to="/dotaznik"
                       onClick={() => setIsMobileMenuOpen(false)}

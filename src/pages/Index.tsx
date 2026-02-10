@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import FAQSection from "@/components/FAQSection";
 import StickyNavigation from "@/components/StickyNavigation";
+import ThemeToggle from "@/components/ThemeToggle";
 import { supabase } from "@/integrations/supabase/client";
 import backgroundImage from "@/assets/background.jpg";
 
@@ -114,6 +115,11 @@ const Index = () => {
       />
       {/* Sticky Navigation */}
       <StickyNavigation />
+
+      {/* Fixed theme toggle visible before sticky nav appears */}
+      <div className="fixed top-4 right-4 z-40">
+        <ThemeToggle />
+      </div>
       
       {/* First Screen - Hero + Navigation */}
       <div className="min-h-screen flex flex-col">
