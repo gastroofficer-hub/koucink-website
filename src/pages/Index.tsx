@@ -106,10 +106,12 @@ const Index = () => {
   }, []);
 
   return (
-    <div 
-      className="bg-cover bg-center bg-no-repeat bg-fixed min-h-screen relative"
-      style={{ backgroundImage: `url(${backgroundImage})`, backgroundAttachment: 'fixed' }}
-    >
+    <div className="relative">
+      {/* Fixed background compatible with mobile/tablet */}
+      <div 
+        className="fixed inset-0 bg-cover bg-center bg-no-repeat -z-10"
+        style={{ backgroundImage: `url(${backgroundImage})` }}
+      />
       {/* Sticky Navigation */}
       <StickyNavigation />
       
