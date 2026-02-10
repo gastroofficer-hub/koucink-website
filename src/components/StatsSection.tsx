@@ -21,8 +21,8 @@ const iconMap: Record<string, LucideIcon> = {
 const defaultStats: StatsContent = {
   items: [
     { icon: "Clock", value: 500, suffix: "+", label: "Hodin koučinku" },
-    { icon: "Users", value: 100, suffix: "+", label: "Spokojených klientů" },
     { icon: "Award", value: 5, suffix: "+", label: "Let praxe" },
+    { icon: "Users", value: 100, suffix: "+", label: "Spokojených klientů" },
   ],
 };
 
@@ -79,7 +79,7 @@ const StatsSection = () => {
   return (
     <section ref={ref} className="py-16 bg-primary/10 backdrop-blur-sm">
       <div className="max-w-5xl mx-auto px-6">
-        <div className={`grid grid-cols-2 ${stats.length >= 4 ? 'md:grid-cols-4' : `md:grid-cols-${stats.length}`} gap-8`}>
+        <div className={`grid gap-8 ${stats.length === 1 ? 'grid-cols-1' : stats.length === 2 ? 'grid-cols-2' : stats.length === 3 ? 'grid-cols-3' : 'grid-cols-2 md:grid-cols-4'}`}>
           {stats.map((stat, index) => {
             const IconComp = iconMap[stat.icon] || Award;
             return (
