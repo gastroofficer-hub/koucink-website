@@ -226,7 +226,7 @@ const Index = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.8 }}
-            className="bg-white/70 backdrop-blur-md rounded-2xl p-8 md:p-12 shadow-lg scroll-mt-8"
+            className="bg-card/70 backdrop-blur-md rounded-2xl p-8 md:p-12 shadow-lg scroll-mt-8"
           >
             <h3 className="text-xl font-display font-semibold text-primary mb-4">
               Kdo jsem?
@@ -245,7 +245,7 @@ const Index = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.8 }}
-            className="bg-white/70 backdrop-blur-md rounded-2xl p-8 md:p-12 shadow-lg scroll-mt-8"
+            className="bg-card/70 backdrop-blur-md rounded-2xl p-8 md:p-12 shadow-lg scroll-mt-8"
           >
             <h3 className="text-xl font-display font-semibold text-primary mb-4">
               Proč se mnou?
@@ -264,7 +264,7 @@ const Index = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.8 }}
-            className="bg-white/70 backdrop-blur-md rounded-2xl p-8 md:p-12 shadow-lg scroll-mt-8"
+            className="bg-card/70 backdrop-blur-md rounded-2xl p-8 md:p-12 shadow-lg scroll-mt-8"
           >
             <h3 className="text-xl font-display font-semibold text-primary mb-4">
               Jak probíhá koučink?

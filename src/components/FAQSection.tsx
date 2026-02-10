@@ -42,7 +42,7 @@ const FAQSection = () => {
   }
 
   return (
-    <section id="faq" className="py-20 bg-white/50 backdrop-blur-sm">
+    <section id="faq" className="py-20 bg-card/50 backdrop-blur-sm">
       <div className="max-w-3xl mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

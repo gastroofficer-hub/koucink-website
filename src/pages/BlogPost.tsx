@@ -275,7 +275,7 @@ const BlogPostPage = () => {
                   id="author_name"
                   value={commentForm.author_name}
                   onChange={(e) => setCommentForm(prev => ({ ...prev, author_name: e.target.value }))}
-                  className="bg-white/50 border-primary/20 focus:border-primary"
+                  className="bg-card/50 border-primary/20 focus:border-primary"
                   placeholder="Jan Novák"
                   maxLength={100}
                   required
@@ -287,7 +287,7 @@ const BlogPostPage = () => {
                   id="content"
                   value={commentForm.content}
                   onChange={(e) => setCommentForm(prev => ({ ...prev, content: e.target.value }))}
-                  className="bg-white/50 border-primary/20 focus:border-primary min-h-[100px]"
+                  className="bg-card/50 border-primary/20 focus:border-primary min-h-[100px]"
                   placeholder="Napište svůj komentář..."
                   maxLength={1000}
                   required
@@ -313,7 +313,7 @@ const BlogPostPage = () => {
                 {comments.map((comment) => (
                   <div
                     key={comment.id}
-                    className="bg-white/30 rounded-lg p-4"
+                    className="bg-card/30 rounded-lg p-4"
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1">
