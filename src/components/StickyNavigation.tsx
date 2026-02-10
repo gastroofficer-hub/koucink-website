@@ -79,7 +79,7 @@ const StickyNavigation = () => {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -100, opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-primary/10 shadow-sm"
+          className="fixed top-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-md border-b border-primary/10 shadow-sm"
         >
           <div className="max-w-7xl mx-auto px-4 md:px-6">
             <div className="flex items-center justify-between h-16">
@@ -131,7 +131,7 @@ const StickyNavigation = () => {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
                         transition={{ duration: 0.15 }}
-                        className="absolute top-full right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-primary/10 overflow-hidden z-50"
+                        className="absolute top-full right-0 mt-2 w-56 bg-card rounded-xl shadow-lg border border-primary/10 overflow-hidden z-50"
                       >
                         <div className="py-2">
                           {dropdownItems.map((item) => 

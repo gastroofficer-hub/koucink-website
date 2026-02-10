@@ -57,7 +57,7 @@ const Dotaznik = () => {
               id="firstName"
               value={formData.firstName}
               onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-              className="bg-white/50 border-primary/20 focus:border-primary"
+              className="bg-card/50 border-primary/20 focus:border-primary"
               required
             />
           </div>
@@ -67,7 +67,7 @@ const Dotaznik = () => {
               id="lastName"
               value={formData.lastName}
               onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-              className="bg-white/50 border-primary/20 focus:border-primary"
+              className="bg-card/50 border-primary/20 focus:border-primary"
             />
           </div>
         </div>
@@ -80,7 +80,7 @@ const Dotaznik = () => {
               type="email"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="bg-white/50 border-primary/20 focus:border-primary"
+              className="bg-card/50 border-primary/20 focus:border-primary"
               placeholder="vas@email.cz"
               required
             />
@@ -92,7 +92,7 @@ const Dotaznik = () => {
               type="tel"
               value={formData.phone}
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              className="bg-white/50 border-primary/20 focus:border-primary"
+              className="bg-card/50 border-primary/20 focus:border-primary"
               placeholder="+420 xxx xxx xxx"
               required
             />
@@ -105,7 +105,7 @@ const Dotaznik = () => {
             id="maritalStatus"
             value={formData.maritalStatus}
             onChange={(e) => setFormData({ ...formData, maritalStatus: e.target.value, maritalStatusOther: e.target.value === "jiné" ? formData.maritalStatusOther : "" })}
-            className="flex h-10 w-full rounded-md border border-primary/20 bg-white/50 px-3 py-2 text-base ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:text-sm"
+            className="flex h-10 w-full rounded-md border border-primary/20 bg-card/50 px-3 py-2 text-base text-foreground ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:text-sm"
           >
             <option value="">Vyberte...</option>
             <option value="svobodný/á">Svobodný/á</option>
@@ -120,7 +120,7 @@ const Dotaznik = () => {
               id="maritalStatusOther"
               value={formData.maritalStatusOther}
               onChange={(e) => setFormData({ ...formData, maritalStatusOther: e.target.value })}
-              className="bg-white/50 border-primary/20 focus:border-primary mt-2"
+              className="bg-card/50 border-primary/20 focus:border-primary mt-2"
               placeholder="Upřesněte váš rodinný stav..."
             />
           )}
@@ -161,7 +161,7 @@ const Dotaznik = () => {
             id="coachingTopic"
             value={formData.coachingTopic}
             onChange={(e) => setFormData({ ...formData, coachingTopic: e.target.value })}
-            className="bg-white/50 border-primary/20 focus:border-primary min-h-[120px]"
+            className="bg-card/50 border-primary/20 focus:border-primary min-h-[120px]"
             placeholder="Popište téma, které byste chtěli řešit..."
             required
           />

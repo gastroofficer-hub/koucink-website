@@ -65,7 +65,7 @@ const Diplomy = () => {
                 transition={{ duration: 0.4, delay: index * 0.1 }}
                 className="group block"
               >
-                <div className="bg-white/50 rounded-xl overflow-hidden border border-primary/10 hover:border-primary/30 transition-all hover:shadow-lg">
+                <div className="bg-card/50 rounded-xl overflow-hidden border border-primary/10 hover:border-primary/30 transition-all hover:shadow-lg">
                   <div className="aspect-[3/4] bg-soft-green/30 flex items-center justify-center">
                     <img
                       src={diploma.file_url}

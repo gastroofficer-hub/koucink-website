@@ -103,7 +103,7 @@ const EtickyKodex = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="bg-white/30 rounded-xl p-6"
+                  className="bg-card/30 rounded-xl p-6"
                 >
                   <h2 className="text-xl font-display font-semibold text-primary mb-3">
                     {section.title}
