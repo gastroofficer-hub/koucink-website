@@ -62,14 +62,8 @@ const TestimonialsSection = () => {
   }
 
   return (
-    <section id="reference" className="py-20 px-6 md:px-12 lg:px-20">
-      <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.8 }}
-        className="max-w-4xl mx-auto bg-card/70 backdrop-blur-md rounded-2xl p-8 md:p-12 shadow-lg scroll-mt-8"
-      >
+    <section id="reference" className="py-20 bg-soft-green/30">
+      <div className="max-w-6xl mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -131,7 +125,7 @@ const TestimonialsSection = () => {
             </motion.div>
           ))}
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 };
