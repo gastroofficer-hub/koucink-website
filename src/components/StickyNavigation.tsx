@@ -94,18 +94,20 @@ const StickyNavigation = () => {
                   <button
                     key={item.label}
                     onClick={() => scrollToSection(item.targetId!)}
-                    className="px-3 py-2 text-sm font-medium text-foreground/80 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors"
+                    className="relative px-3 py-2 text-sm font-medium text-foreground/80 hover:text-primary rounded-lg transition-colors group"
                   >
                     {item.label}
+                    <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-primary rounded-full transition-all duration-300 group-hover:w-3/4" />
                   </button>
                 ))}
 
                 {/* Ceník as main item */}
                 <Link
                   to="/cenik"
-                  className="px-3 py-2 text-sm font-medium text-foreground/80 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors"
+                  className="relative px-3 py-2 text-sm font-medium text-foreground/80 hover:text-primary rounded-lg transition-colors group"
                 >
                   Ceník
+                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-primary rounded-full transition-all duration-300 group-hover:w-3/4" />
                 </Link>
 
                 {/* Dropdown for pages */}
@@ -115,7 +117,7 @@ const StickyNavigation = () => {
                       e.stopPropagation();
                       setIsDropdownOpen(!isDropdownOpen);
                     }}
-                    className="px-3 py-2 text-sm font-medium text-foreground/80 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors inline-flex items-center gap-1"
+                    className="relative px-3 py-2 text-sm font-medium text-foreground/80 hover:text-primary rounded-lg transition-colors inline-flex items-center gap-1 group"
                   >
                     Více
                     <ChevronDown className={`w-4 h-4 transition-transform ${isDropdownOpen ? "rotate-180" : ""}`} />
@@ -159,7 +161,7 @@ const StickyNavigation = () => {
 
                 <Link
                   to="/dotaznik"
-                  className="ml-3 px-5 py-2 bg-primary text-primary-foreground rounded-full text-sm font-medium hover:bg-primary/90 transition-colors"
+                  className="ml-3 px-5 py-2 bg-primary text-primary-foreground rounded-full text-sm font-medium hover:bg-primary/90 hover:shadow-md hover:scale-105 transition-all duration-300"
                 >
                   Rezervace
                 </Link>
