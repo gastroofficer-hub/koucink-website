@@ -77,8 +77,8 @@ const StatsSection = () => {
   }, []);
 
   return (
-    <section ref={ref} className="py-16 bg-card/80 backdrop-blur-md shadow-lg border-y border-primary/10">
-      <div className="max-w-5xl mx-auto px-6">
+    <section ref={ref} className="px-6 md:px-12 lg:px-20 py-12">
+      <div className="max-w-4xl mx-auto bg-card/70 backdrop-blur-md rounded-2xl p-8 md:p-12 shadow-lg">
         <div className={`grid gap-8 ${stats.length === 1 ? 'grid-cols-1' : stats.length === 2 ? 'grid-cols-2' : stats.length === 3 ? 'grid-cols-3' : 'grid-cols-2 md:grid-cols-4'}`}>
           {stats.map((stat, index) => {
             const IconComp = iconMap[stat.icon] || Award;
