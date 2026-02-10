@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowLeft, Calendar, User } from "lucide-react";
+import SEOHead from "@/components/SEOHead";
+import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/integrations/supabase/client";
 import backgroundImage from "@/assets/background.jpg";
 
@@ -54,6 +56,7 @@ const Blog = () => {
       className="page-bg"
       style={{ backgroundImage: `url(${backgroundImage})` }}
     >
+      <SEOHead title="Blog" description="Články o koučinku, osobním rozvoji a motivaci od kouče Ondřeje Zemana." path="/blog" />
       <div className="min-h-screen bg-background/70 backdrop-blur-sm pt-16">
         <div className="section-container">
           <motion.div
@@ -80,8 +83,20 @@ const Blog = () => {
             </h1>
 
             {loading ? (
-              <div className="glass-card rounded-2xl p-8">
-                <p className="text-muted-foreground">Načítání příspěvků...</p>
+              <div className="space-y-6">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="glass-card rounded-2xl p-6">
+                    <div className="flex flex-col md:flex-row gap-6">
+                      <Skeleton className="w-full md:w-1/3 h-48 rounded-xl" />
+                      <div className="flex-1 space-y-3">
+                        <Skeleton className="h-7 w-3/4" />
+                        <Skeleton className="h-4 w-full" />
+                        <Skeleton className="h-4 w-2/3" />
+                        <Skeleton className="h-4 w-1/3" />
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             ) : posts.length === 0 ? (
               <div className="glass-card rounded-2xl p-8 text-center">

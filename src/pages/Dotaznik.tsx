@@ -1,6 +1,7 @@
 import { useState } from "react";
 import PageLayout from "@/components/PageLayout";
 import { Button } from "@/components/ui/button";
+import SEOHead from "@/components/SEOHead";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -49,6 +50,7 @@ const Dotaznik = () => {
       title="Rezervace"
       headerRight={<img src={logo} alt="Zeman - koučink" className="w-28 h-auto opacity-70" />}
     >
+      <SEOHead title="Rezervace" description="Rezervujte si koučovací sezení s Ondřejem Zemanem. Osobní i online koučink." path="/dotaznik" />
       <form onSubmit={handleSubmit} className="space-y-8">
         <div className="grid md:grid-cols-2 gap-6">
           <div className="space-y-2">

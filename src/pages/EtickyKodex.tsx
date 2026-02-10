@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
+import SEOHead from "@/components/SEOHead";
 import { supabase } from "@/integrations/supabase/client";
 import backgroundImage from "@/assets/background.jpg";
 
@@ -64,6 +65,7 @@ const EtickyKodex = () => {
       className="page-bg"
       style={{ backgroundImage: `url(${backgroundImage})` }}
     >
+      <SEOHead title="Etický kodex" description="Etické principy koučovací praxe Ondřeje Zemana. Důvěrnost, respekt a profesionalita." path="/eticky-kodex" />
       <div className="min-h-screen bg-background/70 backdrop-blur-sm pt-16">
         <div className="section-container">
           <motion.div

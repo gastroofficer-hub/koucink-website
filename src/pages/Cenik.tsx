@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
+import SEOHead from "@/components/SEOHead";
 import { supabase } from "@/integrations/supabase/client";
 import backgroundImage from "@/assets/background.jpg";
 
@@ -67,6 +68,7 @@ const Cenik = () => {
       className="page-bg"
       style={{ backgroundImage: `url(${backgroundImage})` }}
     >
+      <SEOHead title="Ceník" description="Ceník koučovacích služeb Ondřeje Zemana. Individuální koučink, balíčky sezení." path="/cenik" />
       <div className="min-h-screen bg-background/70 backdrop-blur-sm pt-16">
         <div className="section-container">
           <motion.div

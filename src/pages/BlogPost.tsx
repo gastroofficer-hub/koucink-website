@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowLeft, Calendar, User, Send, Trash2 } from "lucide-react";
+import SEOHead from "@/components/SEOHead";
+import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -169,8 +171,16 @@ const BlogPostPage = () => {
         className="page-bg"
         style={{ backgroundImage: `url(${backgroundImage})` }}
       >
-        <div className="min-h-screen bg-background/70 backdrop-blur-sm pt-16 flex items-center justify-center">
-          <p className="text-muted-foreground">Načítání...</p>
+        <div className="min-h-screen bg-background/70 backdrop-blur-sm pt-16">
+          <div className="section-container">
+            <div className="glass-card rounded-2xl p-8 md:p-12 space-y-4">
+              <Skeleton className="h-8 w-3/4" />
+              <Skeleton className="h-4 w-1/3" />
+              <Skeleton className="h-64 w-full" />
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-2/3" />
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -221,6 +231,7 @@ const BlogPostPage = () => {
             </Link>
           </motion.div>
 
+          <SEOHead title={post.title} description={post.content.substring(0, 155)} path={`/blog/${post.id}`} />
           <motion.article
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
