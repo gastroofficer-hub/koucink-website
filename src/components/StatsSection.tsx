@@ -77,7 +77,7 @@ const StatsSection = () => {
   }, []);
 
   return (
-    <section ref={ref} className="py-16 bg-primary/10 backdrop-blur-sm">
+    <section ref={ref} className="py-16 bg-primary/10">
       <div className="max-w-5xl mx-auto px-6">
         <div className={`grid gap-8 ${stats.length === 1 ? 'grid-cols-1' : stats.length === 2 ? 'grid-cols-2' : stats.length === 3 ? 'grid-cols-3' : 'grid-cols-2 md:grid-cols-4'}`}>
           {stats.map((stat, index) => {
