@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { CheckCircle, CalendarCheck, Mail, Award, ChevronDown, User, Heart, ListOrdered, BookOpen, Coins, Scale, Quote, HelpCircle } from "lucide-react";
+import SEOHead from "@/components/SEOHead";
 import NavigationCard from "@/components/NavigationCard";
 import ScrollNavigationCard from "@/components/ScrollNavigationCard";
 import Footer from "@/components/Footer";
@@ -108,6 +109,7 @@ const Index = () => {
 
   return (
     <div className="relative">
+      <SEOHead path="/" />
       {/* Fixed background compatible with mobile/tablet */}
       <div 
         className="fixed inset-0 bg-cover bg-center bg-no-repeat -z-10"

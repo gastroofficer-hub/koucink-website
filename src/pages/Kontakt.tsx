@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import PageLayout from "@/components/PageLayout";
 import { Mail, MapPin, User, Phone } from "lucide-react";
+import SEOHead from "@/components/SEOHead";
+import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/integrations/supabase/client";
 import coachPhotoDefault from "@/assets/coach-photo.jpg";
 import logo from "@/assets/logo.png";
@@ -41,7 +43,18 @@ const Kontakt = () => {
         title="Kontakt"
         headerRight={<img src={logo} alt="Zeman - koučink" className="w-28 h-auto opacity-70" />}
       >
-        <p className="text-muted-foreground">Načítání...</p>
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="space-y-6">
+            <Skeleton className="h-6 w-full" />
+            <Skeleton className="h-6 w-3/4" />
+            <Skeleton className="h-14 w-full" />
+            <Skeleton className="h-14 w-full" />
+            <Skeleton className="h-14 w-full" />
+          </div>
+          <div className="flex justify-center">
+            <Skeleton className="w-64 h-64 rounded-full" />
+          </div>
+        </div>
       </PageLayout>
     );
   }
@@ -64,6 +77,7 @@ const Kontakt = () => {
       title="Kontakt"
       headerRight={<img src={logo} alt="Zeman - koučink" className="w-28 h-auto opacity-70" />}
     >
+      <SEOHead title="Kontakt" description="Kontaktujte kouče Ondřeje Zemana. Online i osobní koučink v Lanškrouně." path="/kontakt" />
       <div className="grid md:grid-cols-2 gap-12 items-center">
         <div className="space-y-8">
           <p className="text-lg text-foreground/90 leading-relaxed">

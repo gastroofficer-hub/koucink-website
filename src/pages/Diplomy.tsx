@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import PageLayout from "@/components/PageLayout";
 import { supabase } from "@/integrations/supabase/client";
 import { Award } from "lucide-react";
+import SEOHead from "@/components/SEOHead";
+import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
 
 interface Diploma {
@@ -35,6 +37,7 @@ const Diplomy = () => {
 
   return (
     <PageLayout title="Moje diplomy a certifikáty">
+      <SEOHead title="Diplomy a certifikáty" description="Certifikáty a diplomy kouče Ondřeje Zemana dokládající kvalifikaci v koučinku." path="/diplomy" />
       <div className="space-y-8">
         <p className="text-lg text-foreground/90 leading-relaxed">
           Zde naleznete přehled mých certifikátů a diplomů, které dokládají moji kvalifikaci 
@@ -42,8 +45,13 @@ const Diplomy = () => {
         </p>
 
         {loading ? (
-          <div className="text-center py-12 text-muted-foreground">
-            Načítání diplomů...
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="bg-card/50 rounded-xl overflow-hidden border border-primary/10">
+                <Skeleton className="aspect-[3/4] w-full" />
+                <div className="p-4"><Skeleton className="h-5 w-3/4" /></div>
+              </div>
+            ))}
           </div>
         ) : diplomas.length === 0 ? (
           <div className="text-center py-12">

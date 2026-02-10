@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import PageLayout from "@/components/PageLayout";
 import { Button } from "@/components/ui/button";
 import { Printer } from "lucide-react";
+import SEOHead from "@/components/SEOHead";
+import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/integrations/supabase/client";
 
 interface Section {
@@ -43,7 +45,12 @@ const InformovanySouhlas = () => {
   if (loading) {
     return (
       <PageLayout title="Informovaný souhlas">
-        <p className="text-muted-foreground">Načítání...</p>
+        <div className="space-y-6">
+          <Skeleton className="h-5 w-full" />
+          <Skeleton className="h-5 w-4/5" />
+          <Skeleton className="h-32 w-full" />
+          <Skeleton className="h-32 w-full" />
+        </div>
       </PageLayout>
     );
   }
@@ -76,6 +83,7 @@ const InformovanySouhlas = () => {
 
   return (
     <PageLayout title="Informovaný souhlas">
+      <SEOHead title="Informovaný souhlas" description="Informovaný souhlas pro koučovací proces s Ondřejem Zemanem." path="/informovany-souhlas" />
       <div className="space-y-6">
         <div className="flex justify-end print:hidden">
           <Button
