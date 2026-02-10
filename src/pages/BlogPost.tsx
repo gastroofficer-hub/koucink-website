@@ -169,7 +169,7 @@ const BlogPostPage = () => {
         className="page-bg"
         style={{ backgroundImage: `url(${backgroundImage})` }}
       >
-        <div className="min-h-screen bg-background/70 backdrop-blur-sm flex items-center justify-center">
+        <div className="min-h-screen bg-background/70 backdrop-blur-sm pt-16 flex items-center justify-center">
           <p className="text-muted-foreground">Načítání...</p>
         </div>
       </div>
@@ -182,7 +182,7 @@ const BlogPostPage = () => {
         className="page-bg"
         style={{ backgroundImage: `url(${backgroundImage})` }}
       >
-        <div className="min-h-screen bg-background/70 backdrop-blur-sm">
+          <div className="min-h-screen bg-background/70 backdrop-blur-sm pt-16">
           <div className="section-container">
             <Link 
               to="/blog" 
@@ -205,7 +205,7 @@ const BlogPostPage = () => {
       className="page-bg"
       style={{ backgroundImage: `url(${backgroundImage})` }}
     >
-      <div className="min-h-screen bg-background/70 backdrop-blur-sm">
+      <div className="min-h-screen bg-background/70 backdrop-blur-sm pt-16">
         <div className="section-container">
           <motion.div
             initial={{ opacity: 0, x: -20 }}

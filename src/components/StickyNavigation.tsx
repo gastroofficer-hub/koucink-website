@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ChevronDown } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "@/assets/logo.png";
 import ThemeToggle from "@/components/ThemeToggle";
 
@@ -39,6 +39,10 @@ const StickyNavigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const isHomePage = location.pathname === "/";
+  const isVisible = isHomePage ? isScrolled : true;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -63,6 +67,10 @@ const StickyNavigation = () => {
   }, []);
 
   const scrollToSection = (targetId: string) => {
+    if (!isHomePage) {
+      navigate("/#" + targetId);
+      return;
+    }
     const element = document.getElementById(targetId);
     if (element) {
       element.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -73,8 +81,9 @@ const StickyNavigation = () => {
 
   return (
     <AnimatePresence>
-      {isScrolled && (
+      {isVisible && (
         <motion.header
+          key="sticky-nav"
           initial={{ y: -100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -100, opacity: 0 }}

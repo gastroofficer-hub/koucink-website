@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import StickyNavigation from "./components/StickyNavigation";
 import Index from "./pages/Index";
 import InformovanySouhlas from "./pages/InformovanySouhlas";
 import Dotaznik from "./pages/Dotaznik";
@@ -24,6 +25,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <StickyNavigation />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/informovany-souhlas" element={<InformovanySouhlas />} />
