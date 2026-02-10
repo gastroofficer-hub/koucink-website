@@ -34,7 +34,6 @@ const scrollNavigationItems = [
 ];
 
 const navigationItems = [
-  { icon: Scale, title: "Etický kodex", to: "/eticky-kodex" },
   { icon: Award, title: "Diplomy", to: "/diplomy" },
   { icon: Mail, title: "Kontakt", to: "/kontakt" },
   { icon: BookOpen, title: "Blog", to: "/blog" },
@@ -139,7 +138,7 @@ const Index = () => {
           </motion.div>
         </div>
 
-        {/* O mně Scroll Navigation Cards - first row */}
+        {/* First row - scroll navigation + Etický kodex link */}
         <div className="px-4 md:px-8 lg:px-12 pb-6 md:pb-10">
           <div className="flex justify-center gap-3 md:gap-4">
             {scrollNavigationItems.map((item, index) => (
@@ -151,6 +150,12 @@ const Index = () => {
                 delay={0.2 + index * 0.05}
               />
             ))}
+            <NavigationCard
+              icon={Scale}
+              title="Etický kodex"
+              to="/eticky-kodex"
+              delay={0.2 + scrollNavigationItems.length * 0.05}
+            />
           </div>
         </div>
 
