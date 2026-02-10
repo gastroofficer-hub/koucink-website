@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import FAQSection from "@/components/FAQSection";
 import StickyNavigation from "@/components/StickyNavigation";
+import StatsSection from "@/components/StatsSection";
 import ThemeToggle from "@/components/ThemeToggle";
 import { supabase } from "@/integrations/supabase/client";
 import backgroundImage from "@/assets/background.jpg";
@@ -305,6 +306,9 @@ const Index = () => {
           </motion.div>
         </div>
       </div>
+
+      {/* Stats Section */}
+      <StatsSection />
 
       {/* Testimonials Section */}
       <TestimonialsSection />
