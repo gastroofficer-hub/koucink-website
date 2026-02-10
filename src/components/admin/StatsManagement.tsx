@@ -16,8 +16,8 @@ interface StatsManagementProps {
 const StatsManagement = ({ onLogChange }: StatsManagementProps) => {
   const [items, setItems] = useState<StatItemData[]>([
     { icon: "Clock", value: 500, suffix: "+", label: "Hodin koučinku" },
-    { icon: "Users", value: 100, suffix: "+", label: "Spokojených klientů" },
     { icon: "Award", value: 5, suffix: "+", label: "Let praxe" },
+    { icon: "Users", value: 100, suffix: "+", label: "Spokojených klientů" },
   ]);
   const [saving, setSaving] = useState(false);
 
